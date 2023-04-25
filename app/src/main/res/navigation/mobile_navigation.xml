@@ -19,5 +19,9 @@
         android:id="@+id/nav_setting_fragment"
         android:name="com.example.moviemate.fragment.SettingFragment"
         android:label="SettingFragment" />
+    <fragment
+        android:id="@+id/nav_report_fragment"
+        android:name="com.example.moviemate.fragment.ReportFragment"
+        android:label="ReportFragment" />
 
 </navigation>

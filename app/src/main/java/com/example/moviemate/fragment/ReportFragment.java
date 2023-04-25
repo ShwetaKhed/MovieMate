@@ -29,10 +29,11 @@ import com.github.mikephil.charting.components.Description;
 public class ReportFragment extends Fragment {
     private FragmentReportBinding binding;
     final String CHART_URL = "";
+    public ReportFragment(){}
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         binding = FragmentReportBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -59,18 +60,19 @@ public class ReportFragment extends Fragment {
         barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         List<String> xAxisValues = new ArrayList<>(Arrays.asList("Sun", "Mon", "Tues","Wed", "Thurs", "Fri","Sat"));
-        binding.barChart.getXAxis().setValueFormatter(new
-                com.github.mikephil.charting.formatter.IndexAxisValueFormatter(xAxisValues));
-        BarData barData = new BarData(barDataSet);
-        binding.barChart.setData(barData);
-        barData.setBarWidth(1.0f);
-        binding.barChart.setVisibility(View.VISIBLE);
-        binding.barChart.animateY(4000);
-        //description will be displayed as "Description Label" if not provided
-        Description description = new Description();
-        description.setText("Daily Steps");
-        binding.barChart.setDescription(description);
-        //refresh the chart
-        binding.barChart.invalidate();
+//        binding.barChart.getXAxis().setValueFormatter(new
+//                com.github.mikephil.charting.formatter.IndexAxisValueFormatter(xAxisValues));
+//        BarData barData = new BarData(barDataSet);
+//        binding.barChart.setData(barData);
+//        barData.setBarWidth(1.0f);
+//        binding.barChart.setVisibility(View.VISIBLE);
+//        binding.barChart.animateY(4000);
+//        //description will be displayed as "Description Label" if not provided
+//        Description description = new Description();
+//        description.setText("Daily Steps");
+//        binding.barChart.setDescription(description);
+//        //refresh the chart
+//        binding.barChart.invalidate();
+        return view;
     }
 }
