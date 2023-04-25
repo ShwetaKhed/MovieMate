@@ -1,6 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#2C2F31"
+    android:gravity="center|top"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/top_container"
+        android:layout_width="match_parent"
+        android:layout_height="211dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/profile_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:visibility="visible"
+            tools:srcCompat="@tools:sample/avatars"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="371dp"
+        android:layout_height="430dp"
+        android:orientation="vertical"
+        android:visibility="visible"
+        tools:visibility="visible">
+
+        <EditText
+            android:id="@+id/edit_personName"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="69dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="24sp"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <EditText
+            android:id="@+id/edit_dob"
+            android:layout_width="match_parent"
+            android:layout_height="69dp"
+            android:ems="10"
+            android:inputType="datetime"
+            android:text="10/10/1223"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="24sp"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <Spinner
+            android:id="@+id/spinner_genre"
+            style="@android:style/Widget.Material.Light.Spinner.Underlined"
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:backgroundTint="#FFFFFF"
+            android:dropDownVerticalOffset="60dp"
+            android:gravity="left"
+            android:padding="10dip"
+            android:popupBackground="@color/cardview_dark_background"
+            android:popupElevation="50dp"
+            android:spinnerMode="dropdown"
+            android:textColor="#FFFFFF"
+            android:textSize="50dp"
+            android:verticalScrollbarPosition="right"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <Spinner
+            android:id="@+id/spinner_theater"
+            style="@android:style/Widget.Material.Light.Spinner.Underlined"
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:backgroundTint="#FFFFFF"
+            android:dropDownVerticalOffset="60dp"
+            android:gravity="left"
+            android:padding="10dip"
+            android:popupBackground="@color/cardview_dark_background"
+            android:popupElevation="50dp"
+            android:spinnerMode="dropdown"
+            android:textColor="#FFFFFF"
+            android:textSize="50dp"
+            android:verticalScrollbarPosition="right"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:visibility="visible"
+        tools:visibility="visible" />
+
+</LinearLayout>
