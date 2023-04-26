@@ -1,7 +1,10 @@
 package com.example.moviemate;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -15,30 +18,22 @@ import com.example.moviemate.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setSupportActionBar(binding.appBar.toolbar);
+        setContentView(R.layout.activity_main);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+            }
+        }, 2000);
 
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home_fragment,
-                R.id.nav_booking_fragment,
-                R.id.nav_info_fragment,
-                R.id.nav_setting_fragment)
-                .setOpenableLayout(binding.drawerLayout)
-                .build();
-        FragmentManager fragmentManager= getSupportFragmentManager();
-        NavHostFragment navHostFragment = (NavHostFragment)
-                fragmentManager.findFragmentById(R.id.nav_host_fragment);
-        NavController navController = navHostFragment.getNavController();
-        //Sets up a NavigationView for use with a NavController.
-        NavigationUI.setupWithNavController(binding.navView, navController);
-        //Sets up a Toolbar for use with a NavController.
-        NavigationUI.setupWithNavController(binding.appBar.toolbar,navController,
-                mAppBarConfiguration);
     }
 }
