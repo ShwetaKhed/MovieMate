@@ -1,6 +1,7 @@
 package com.example.moviemate;
 
 public class User {
+    String email;
     String username;
     String dob;
     String genrePreference;
@@ -9,11 +10,20 @@ public class User {
     public User() {
     }
 
-    public User(String username, String dob, String genrePreference, String theaterPreference) {
+    public User(String email, String username, String dob, String genrePreference, String theaterPreference) {
+        this.email = email;
         this.username = username;
         this.dob = dob;
         this.genrePreference = genrePreference;
         this.theaterPreference = theaterPreference;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {
