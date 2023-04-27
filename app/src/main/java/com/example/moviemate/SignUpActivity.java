@@ -18,7 +18,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUpActivity extends AppCompatActivity {
-
     private FirebaseAuth auth;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,24 +30,25 @@ public class SignUpActivity extends AppCompatActivity {
     public void firebaseAuthentication() {
         auth = FirebaseAuth.getInstance();
         Button registerButton = findViewById(R.id.addButton);
-        EditText emailEditText = findViewById(R.id.emailEditText);
-        EditText passwordEditText = findViewById(R.id.passwordEditText);
+       // EditText emailEditText = findViewById(R.id.emailEditText);
+       // EditText passwordEditText = findViewById(R.id.passwordEditText);
+        EditText emailEditText = findViewById(R.id.email_create);
+        EditText passwordEditText = findViewById(R.id.password_create);
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SignUpActivity.this,
-                        LaunchActivity.class));
+//                startActivity(new Intent(SignUpActivity.this,
+//                        LaunchActivity.class));
                 // change the text in signup.xml
-                /*String email_txt = emailEditText.getText().toString();
-                String password_txt =
-                        passwordEditText.getText().toString();
-                if (TextUtils.isEmpty(email_txt) ||
-                        TextUtils.isEmpty(password_txt)) {
+                String email_txt = emailEditText.getText().toString();
+                String password_txt = passwordEditText.getText().toString();
+                if (TextUtils.isEmpty(email_txt) || TextUtils.isEmpty(password_txt)) {
                     String msg = "Empty Username or Password";
                 } else if (password_txt.length() < 6) {
                     String msg = "Password is too short";
                 } else
-                    registerUser(email_txt, password_txt);*/
+                    registerUser(email_txt, password_txt);
             }
         });
     }
@@ -65,6 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
                     startActivity(new Intent(SignUpActivity.this,
                             LaunchActivity.class));
                 } else {
+                    System.out.println(task.getException());
                     String msg = "Registration Unsuccessful";
                     toastMsg(msg);
                 }
