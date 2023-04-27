@@ -36,7 +36,8 @@ public class LaunchActivity extends AppCompatActivity {
                 R.id.nav_home_fragment,
                 R.id.nav_booking_fragment,
                 R.id.nav_info_fragment,
-                R.id.nav_setting_fragment)
+                R.id.nav_setting_fragment,
+                R.id.nav_report_fragment)
                 .setOpenableLayout(binding.drawerLayout)
                 .build();
         FragmentManager fragmentManager= getSupportFragmentManager();
