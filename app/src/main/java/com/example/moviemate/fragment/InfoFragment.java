@@ -7,13 +7,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.moviemate.User;
 import com.example.moviemate.databinding.InfoFragmentBinding;
 import com.example.moviemate.viewmodel.SharedViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.fragment.app.Fragment;
 
@@ -21,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InfoFragment extends Fragment {
+    private DatabaseReference mDatabaseRef;
     private InfoFragmentBinding binding;
     public InfoFragment(){}
     @Override
@@ -52,7 +60,18 @@ public class InfoFragment extends Fragment {
                 String newDob=binding.editDob.getText().toString();
                 String genrePreference = binding.spinnerGenre.getSelectedItem().toString();
                 String theaterPreference = binding.spinnerTheater.getSelectedItem().toString();
-
+                //TODO:Access here the login gmail id
+                //TODO:I also need to fetch the data from firebase once user login into the system.
+                //TODO:Make validation for all the parameters to make the object instance.
+                //TODO: get the username as well
+                User user = new User("nisha1@gmail.com", newName,newDob, genrePreference, theaterPreference );
+                mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users");
+                mDatabaseRef.child("nisha").setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getContext() , "Successfully Updated", Toast.LENGTH_SHORT).show();
+                    }
+                });
             } });
         return view;
     }

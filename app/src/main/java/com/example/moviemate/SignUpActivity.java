@@ -1,6 +1,5 @@
 package com.example.moviemate;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,6 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth auth;
@@ -64,6 +65,8 @@ public class SignUpActivity extends AppCompatActivity {
                     String msg = "Registration Successful";
                     startActivity(new Intent(SignUpActivity.this,
                             LaunchActivity.class));
+                    UpdateDataBase(email_txt);
+
                 } else {
                     System.out.println(task.getException());
                     String msg = "Registration Unsuccessful";
@@ -75,6 +78,19 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void toastMsg(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void UpdateDataBase(String email)
+    {
+        //TODO: Need to get the username. I added following parameters for the testing only
+        DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users");;
+        User user = new User( email, "newName","newDob", "genrePreference", "theaterPreference" );
+        mDatabaseRef.child("nisha12").setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                toastMsg("Success");
+            }
+        });
     }
 }
 
