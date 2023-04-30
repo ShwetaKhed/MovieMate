@@ -14,10 +14,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.moviemate.databinding.HomeFragmentBinding;
 import com.example.moviemate.databinding.LaunchScreenBinding;
 import com.example.moviemate.model.MovieResult;
-import com.example.moviemate.model.androidVersion;
 import com.example.moviemate.service.RetrofitClient;
 
 import java.util.ArrayList;
@@ -33,7 +31,6 @@ public class LaunchActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter myAdapter;
     RecyclerView.LayoutManager layoutManager;
-    ArrayList<androidVersion> people;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +56,7 @@ public class LaunchActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.appBar.toolbar,navController,
                 mAppBarConfiguration);
         getLatestMovies(binding);
-        displayMovies();
+        //displayMovies();
     }
 
     private void getLatestMovies(LaunchScreenBinding binding) {
@@ -92,18 +89,7 @@ public class LaunchActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        people = new ArrayList < androidVersion > ();
 
-        people.add(new androidVersion("Honeycomb", "2.3-3.7", "honeycomb"));
-        people.add(new androidVersion("Ice Cream Sandwich", "3.0-3.2.6", "icecreamsandwich"));
-        people.add(new androidVersion("JellyBean", "4.0-4.3.1", "jellybean"));
-        people.add(new androidVersion("Kitkat", "4.4-4.4.4", "kitkat"));
-        people.add(new androidVersion("Lollipop", "5.0-5.1.1", "lollipop"));
-        people.add(new androidVersion("Marshmallow", "6.0-6.0.1", "marshmallow"));
-
-        myAdapter = new androidVersionAdapter(this, people);
-
-        recyclerView.setAdapter(myAdapter);
     }
 
 
