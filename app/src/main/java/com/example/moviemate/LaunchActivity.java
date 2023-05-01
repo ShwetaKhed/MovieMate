@@ -1,7 +1,9 @@
 package com.example.moviemate;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import com.example.moviemate.model.MovieResult;
 import com.example.moviemate.service.RetrofitClient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,9 +31,6 @@ public class LaunchActivity extends AppCompatActivity {
     private LaunchScreenBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
 
-    RecyclerView recyclerView;
-    RecyclerView.Adapter myAdapter;
-    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,51 +46,18 @@ public class LaunchActivity extends AppCompatActivity {
                 R.id.nav_info_fragment,
                 R.id.nav_setting_fragment,
                 R.id.nav_report_fragment)
-                .setOpenableLayout(binding.drawerLayout)
+                .setOpenableLayout(binding.drawerLayout1)
                 .build();
         FragmentManager fragmentManager= getSupportFragmentManager();
         NavHostFragment navHostFragment = (NavHostFragment)
                 fragmentManager.findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(binding.navView, navController);
-        NavigationUI.setupWithNavController(binding.appBar.toolbar,navController,
+        NavigationUI.setupWithNavController(binding.appBar.toolbar1,navController,
                 mAppBarConfiguration);
-        getLatestMovies(binding);
-        //displayMovies();
-    }
-
-    private void getLatestMovies(LaunchScreenBinding binding) {
-        Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().getLatestMovies();
-        call.enqueue(new Callback<MovieResult>() {
-            @Override
-            public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
-                MovieResult movieList = response.body();
-                Log.d("tag", String.valueOf(movieList.getResults().size()));
-                for (int i = 0; i < movieList.getResults().size(); i++)
-                {
-                    Log.d("tag", movieList.getResults().get(i).getOriginalTitle());
-                    Log.d("tag", movieList.getResults().get(i).getOverview());
-                }
-                //HomeFragmentBinding.inflate(getLayoutInflater()).tvResult.setText(movieList.getResults().get(1).getOriginalTitle());
-
-
-            }
-
-            @Override
-            public void onFailure(Call<MovieResult> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "An error has occured", Toast.LENGTH_LONG).show();
-            }
-
-        });
-    }
-
-    private void displayMovies(){
-        recyclerView = findViewById(R.id.ListR);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
 
     }
+
 
 
 

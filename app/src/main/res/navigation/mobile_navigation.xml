@@ -5,7 +5,7 @@
     app:startDestination="@id/nav_home_fragment">
     <fragment
         android:id="@+id/nav_booking_fragment"
-        android:name="com.example.moviemate.fragment.BookingFragment"
+        android:name="com.example.moviemate.BookingFragment"
         android:label="BookingFragment" />
     <fragment
         android:id="@+id/nav_home_fragment"
