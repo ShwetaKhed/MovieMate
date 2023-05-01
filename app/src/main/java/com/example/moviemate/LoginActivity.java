@@ -1,15 +1,20 @@
 package com.example.moviemate;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,8 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     private void loginUser(String txt_email, String txt_pwd) {
-       /* startActivity(new Intent(LoginActivity.this,
-                LaunchActivity.class));*/
+
         // call the object and provide it with email id and password
         auth.signInWithEmailAndPassword(txt_email,
                 txt_pwd).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -55,6 +59,11 @@ public class LoginActivity extends AppCompatActivity {
                 toastMsg(msg);
                 startActivity(new Intent(LoginActivity.this,
                         LaunchActivity.class));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Error");
             }
         });
     }
