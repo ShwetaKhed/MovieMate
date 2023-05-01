@@ -44,11 +44,18 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {String txt_Email = emailEditText.getText().toString();
                 String txt_Pwd = passwordEditText.getText().toString();
-                loginUser(txt_Email,txt_Pwd);
+                if (txt_Email == null || txt_Email == "")
+                {
+                    toastMsg("Invalid username");
+                }
+                else {
+                    loginUser(txt_Email, txt_Pwd);
+                }
             }
         });
     }
     private void loginUser(String txt_email, String txt_pwd) {
+
 
         // call the object and provide it with email id and password
         auth.signInWithEmailAndPassword(txt_email,
