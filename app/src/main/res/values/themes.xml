@@ -19,6 +19,9 @@
     </style>
     <style name="Theme.MovieMate.AppBarOverlay"
         parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="Theme.MovieMate.PopupOverlay"
+    <style name="Theme.NavigationJava.PopupOverlay"
         parent="ThemeOverlay.MaterialComponents.Light" />
+    <style name="Theme.NavigationJava.AppBarOverlay"
+        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
 </resources>

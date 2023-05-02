@@ -5,27 +5,42 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-    <!--For image src we have used ic_launcher
-        and for text "courseName" they are used
-        only for reference how it will looks"-->
-    <ImageView
-        android:id="@+id/courseImg"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:padding="8dp"
-        android:src="@mipmap/ic_launcher_round" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvMovie"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:elevation="3dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center">
-        <TextView
-            android:id="@+id/courseName"
-            android:text="courseName"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivMovie"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/movieTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivMovie"
+                android:layout_marginTop="0dp"
+                android:fontWeight="500"
+                android:text="courseName"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

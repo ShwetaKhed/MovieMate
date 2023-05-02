@@ -1,27 +1,60 @@
 package com.example.moviemate;
 
+import static android.content.ContentValues.TAG;
+import static androidx.core.content.ContextCompat.startActivity;
+
+import static java.security.AccessController.getContext;
+
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.example.moviemate.databinding.BookingFragmentBinding;
+import com.example.moviemate.model.Movie;
+import com.example.moviemate.model.MovieResult;
 
 import java.util.ArrayList;
+
+
 
 // Extends the Adapter class to RecyclerView.Adapter
 // and implement the unimplemented methods
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-    ArrayList courseImg, courseName;
-    Context context;
+    ArrayList movieTitle = new ArrayList<>();
+    ArrayList movieImage = new ArrayList<>();
+    ArrayList movieOverview = new ArrayList<>();
+    ArrayList movieAdult = new ArrayList<>();
+    ArrayList movieReleaseDate= new ArrayList<>();
 
-    // Constructor for initialization
-    public Adapter(ArrayList courseName) {
+    ArrayList<Movie> movieList = new ArrayList<>();
+    public static Context context;
+
+
+
+    public Adapter(Context context, ArrayList<Movie> movielist) {
         this.context = context;
-        this.courseName = courseName;
+        this.movieList = movielist;
+        for (int i = 0; i < movielist.size(); i ++) {
+            this.movieTitle.add(movielist.get(i).getOriginalTitle());
+            this.movieImage.add(movielist.get(i).getPosterPath());
+            this.movieOverview.add(movielist.get(i).getOverview());
+            this.movieAdult.add(movielist.get(i).getAdult());
+            this.movieReleaseDate.add(movielist.get(i).getReleaseDate());
+        }
+
+
     }
+
 
     @NonNull
     @Override
@@ -40,26 +73,45 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // TypeCast Object to int type
        // int res = (int) courseImg.get(position);
-        //holder.images.setImageResource(res);
-        holder.text.setText((String) courseName.get(position));
+        Glide.with(holder.imageView.getContext()).load(movieImage.get(position)).into(holder.imageView);
+        holder.text.setText((String) movieTitle.get(position));
     }
 
     @Override
     public int getItemCount() {
-        // Returns number of items
-        // currently available in Adapter
-        return 1;
+
+        return movieTitle.size();
     }
 
     // Initializing the Views
     public class ViewHolder extends RecyclerView.ViewHolder {
-        // ImageView images;
         TextView text;
+        ImageView imageView;
 
         public ViewHolder(View view) {
             super(view);
-           // images = (ImageView) view.findViewById(R.id.courseImg);
-            text = (TextView) view.findViewById(R.id.courseName);
+            text = (TextView) view.findViewById(R.id.movieTitle);
+            imageView = (ImageView) view.findViewById(R.id.ivMovie);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    int position = getAdapterPosition();
+
+                    if (position != RecyclerView.NO_POSITION){
+                        Movie selectedMovie =  movieList.get(position);
+
+
+                        Intent i = new Intent(context, MovieContentActivity.class);
+
+                        i.putExtra("movie", "sdfsdfs");
+                        context.startActivity(i);
+
+                    }
+                   // context.startActivity(new Intent(context,SignUpActivity.class));
+
+                }
+            });
+
         }
     }
 }

@@ -5,23 +5,19 @@
     app:startDestination="@id/nav_home_fragment">
     <fragment
         android:id="@+id/nav_booking_fragment"
-        android:name="com.example.moviemate.BookingFragment"
-        android:label="BookingFragment" />
+        android:name="com.example.moviemate.BookingFragment" />
     <fragment
         android:id="@+id/nav_home_fragment"
-        android:name="com.example.moviemate.fragment.HomeFragment"
-        android:label="HomeFragment" />
-    <fragment
-        android:id="@+id/nav_info_fragment"
-        android:name="com.example.moviemate.fragment.InfoFragment"
-        android:label="InfoFragment" />
+        android:name="com.example.moviemate.fragment.HomeFragment" />
     <fragment
         android:id="@+id/nav_setting_fragment"
-        android:name="com.example.moviemate.fragment.SettingFragment"
-        android:label="SettingFragment" />
+        android:name="com.example.moviemate.fragment.SettingFragment" />
     <fragment
         android:id="@+id/nav_report_fragment"
-        android:name="com.example.moviemate.fragment.ReportFragment"
-        android:label="ReportFragment" />
+        android:name="com.example.moviemate.fragment.ReportFragment" />
+    <fragment
+        android:id="@+id/nav_info_fragment"
+        android:name="com.example.moviemate.fragment.InfoFragment" />
+
 
 </navigation>

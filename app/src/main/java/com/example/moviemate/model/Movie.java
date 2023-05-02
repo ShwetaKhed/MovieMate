@@ -3,7 +3,8 @@ package com.example.moviemate.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Movie {
+public class
+Movie {
     @SerializedName("original_title")
     private String originalTitle;
 
@@ -15,6 +16,9 @@ public class Movie {
 
     @SerializedName("release_date")
     private String releaseDate;
+
+    @SerializedName("adult")
+    private String adult;
 
 
     public void setOriginalTitle(String originalTitle) {
@@ -48,5 +52,13 @@ public class Movie {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getAdult() {
+        return adult;
+    }
+
+    public void setAdult(String adult) {
+        this.adult = adult;
     }
 }
