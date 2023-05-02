@@ -1,6 +1,7 @@
 package com.example.moviemate;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -19,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moviemate.databinding.LaunchScreenBinding;
 import com.example.moviemate.model.MovieResult;
 import com.example.moviemate.service.RetrofitClient;
+import com.example.moviemate.viewmodel.SharedViewModel;
+import com.example.moviemate.viewmodel.UserViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,8 +34,7 @@ import retrofit2.Response;
 public class LaunchActivity extends AppCompatActivity {
     private LaunchScreenBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
-
-
+    private UserViewModel model;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,10 @@ public class LaunchActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.appBar.toolbar,navController,
                 mAppBarConfiguration);
 
+        model = new ViewModelProvider(this).get(UserViewModel.class);
+        Intent intent=getIntent();
+        String email = intent.getStringExtra("userEmail");
+        model.setLoginEmail(email);
     }
 
 

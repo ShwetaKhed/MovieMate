@@ -2,7 +2,7 @@ package com.example.moviemate;
 
 public class User {
     String email;
-    String username;
+    String name;
     String dob;
     String genrePreference;
     String theaterPreference;
@@ -10,9 +10,9 @@ public class User {
     public User() {
     }
 
-    public User(String email, String username, String dob, String genrePreference, String theaterPreference) {
+    public User(String email, String name, String dob, String genrePreference, String theaterPreference) {
         this.email = email;
-        this.username = username;
+        this.name = name;
         this.dob = dob;
         this.genrePreference = genrePreference;
         this.theaterPreference = theaterPreference;
@@ -26,12 +26,12 @@ public class User {
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDob() {

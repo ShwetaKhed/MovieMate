@@ -13,7 +13,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.moviemate.viewmodel.SharedViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -32,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText emailEditText = findViewById(R.id.emailEditText);
         EditText passwordEditText = findViewById(R.id.passwordEditText);
         Button registerButton =findViewById(R.id.signupButton);
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                         SignUpActivity.class));
             }
         });
+
         Button loginButton =findViewById(R.id.signinButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
     private void loginUser(String txt_email, String txt_pwd) {
 
 
@@ -64,8 +70,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(AuthResult authResult) {
                 String msg = "Login Successful";
                 toastMsg(msg);
-                startActivity(new Intent(LoginActivity.this,
-                        LaunchActivity.class));
+               // startActivity(new Intent(LoginActivity.this, LaunchActivity.class));
+                Intent intent = new Intent(LoginActivity.this, LaunchActivity.class);
+                intent.putExtra("userEmail", txt_email);
+                startActivity(intent);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -79,3 +88,4 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 }
+

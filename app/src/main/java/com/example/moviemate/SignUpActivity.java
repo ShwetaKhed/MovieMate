@@ -10,7 +10,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.moviemate.viewmodel.SharedViewModel;
+import com.example.moviemate.viewmodel.UserViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,7 +28,6 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
         firebaseAuthentication();
-
     }
 
     public void firebaseAuthentication() {
@@ -63,10 +65,12 @@ public class SignUpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     String msg = "Registration Successful";
-                    startActivity(new Intent(SignUpActivity.this,
-                            LaunchActivity.class));
-                    UpdateDataBase(email_txt);
+//                    startActivity(new Intent(SignUpActivity.this,
+//                            LaunchActivity.class));
+                    Intent intent = new Intent(SignUpActivity.this, LaunchActivity.class);
+                    intent.putExtra("userEmail", email_txt);
 
+                    startActivity(intent);
                 } else {
                     System.out.println(task.getException());
                     String msg = "Registration Unsuccessful";
@@ -78,19 +82,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void toastMsg(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    private void UpdateDataBase(String email)
-    {
-        //TODO: Need to get the username. I added following parameters for the testing only
-        DatabaseReference mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users");;
-        User user = new User( email, "newName","newDob", "genrePreference", "theaterPreference" );
-        mDatabaseRef.child("nisha12").setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                toastMsg("Success");
-            }
-        });
     }
 }
 

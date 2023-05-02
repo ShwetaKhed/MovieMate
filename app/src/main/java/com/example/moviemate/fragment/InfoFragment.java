@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -14,11 +15,14 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.moviemate.R;
 import com.example.moviemate.User;
 import com.example.moviemate.databinding.InfoFragmentBinding;
 import com.example.moviemate.viewmodel.SharedViewModel;
+import com.example.moviemate.viewmodel.UserViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -30,6 +34,7 @@ import java.util.List;
 public class InfoFragment extends Fragment {
     private DatabaseReference mDatabaseRef;
     private InfoFragmentBinding binding;
+
     public InfoFragment(){}
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,15 +45,19 @@ public class InfoFragment extends Fragment {
         // Inflate the View for this fragment using the binding
         binding = InfoFragmentBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        SharedViewModel model = new
-                ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-        model.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+
+        System.out.println(requireActivity());
+        UserViewModel model = new
+                ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        model.getLoginEmail().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                //binding.textMessage.setText(s);
-
+               System.out.println("email" + s);
+               readDataFromFirebase(s);
             }
         });
+
+       // readDataFromFirebase(model.getLoginEmail().getValue());
 
         //Add genre spinner
         createGenreSpinner();
@@ -60,13 +69,20 @@ public class InfoFragment extends Fragment {
                 String newDob=binding.editDob.getText().toString();
                 String genrePreference = binding.spinnerGenre.getSelectedItem().toString();
                 String theaterPreference = binding.spinnerTheater.getSelectedItem().toString();
-                //TODO:Access here the login gmail id
-                //TODO:I also need to fetch the data from firebase once user login into the system.
-                //TODO:Make validation for all the parameters to make the object instance.
-                //TODO: get the username as well
-                User user = new User("nisha1@gmail.com", newName,newDob, genrePreference, theaterPreference );
+
+                String email = model.getLoginEmail().getValue();
+                if(email == null || email.isEmpty())
+                {
+                    Toast.makeText(getContext() , "User is not logged In", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                //Get the data before @ in the email address and consider it as the username of the user
+                String username = email.split("@")[0];
+
+                User user = new User(email, newName, newDob, genrePreference, theaterPreference );
+
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users");
-                mDatabaseRef.child("nisha").setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                mDatabaseRef.child(username).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(getContext() , "Successfully Updated", Toast.LENGTH_SHORT).show();
@@ -76,6 +92,48 @@ public class InfoFragment extends Fragment {
         return view;
     }
 
+    private void readDataFromFirebase(String email)
+    {
+        System.out.println("User login email id is : " + email);
+        if(email == null)
+            return;
+
+        //Get the data before @ in the email address and consider it as the username of the user
+        String username = email.split("@")[0];
+
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users");
+        mDatabaseRef.child(username).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    if(task.getResult().exists())
+                    {
+                        //update the fields here
+                        Toast.makeText(getContext(), "Successfully Read", Toast.LENGTH_SHORT).show();
+                        DataSnapshot dataSnapshot = task.getResult();
+                        String email = String.valueOf(dataSnapshot.child("email").getValue());
+                        String name = String.valueOf(dataSnapshot.child("name").getValue());
+                        System.out.println("email : " + email + " and name" + name);
+                        binding.editPersonName.setText(name);
+                    }
+                   else {
+                        //data for this user didnot exist
+                        //show empty blanks here
+                    }
+                    //
+                }
+                else {
+                   //error occurs while fetching this data
+                    Toast.makeText(getContext(), "Failed to read the data", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //get the username.
+        //check for username is not empt
+
+    }
     private void createGenreSpinner()
     {
         Spinner genreSpinner =binding.spinnerGenre;
@@ -112,6 +170,7 @@ public class InfoFragment extends Fragment {
         final ArrayAdapter<String> theaterAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item, list);
         genreSpinner.setAdapter(theaterAdapter);
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
