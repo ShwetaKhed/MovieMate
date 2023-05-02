@@ -1,10 +1,11 @@
 package com.example.moviemate.model;
 
-import com.google.gson.annotations.Expose;
+
 import com.google.gson.annotations.SerializedName;
 
-public class
-Movie {
+import java.io.Serializable;
+@SuppressWarnings("serial")
+public class Movie implements Serializable {
     @SerializedName("original_title")
     private String originalTitle;
 

@@ -22,8 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moviemate.databinding.LaunchScreenBinding;
 import com.example.moviemate.model.MovieResult;
 import com.example.moviemate.service.RetrofitClient;
-import com.example.moviemate.viewmodel.SharedViewModel;
-import com.example.moviemate.viewmodel.UserViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,14 +30,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import android.widget.DatePicker;
-import java.text.DateFormat;
-import java.util.Calendar;
-
-public class LaunchActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class LaunchActivity extends AppCompatActivity {
     private LaunchScreenBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
-    private UserViewModel model;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,23 +59,9 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         NavigationUI.setupWithNavController(binding.appBar.toolbar,navController,
                 mAppBarConfiguration);
 
-        model = new ViewModelProvider(this).get(UserViewModel.class);
-        Intent intent=getIntent();
-        String email = intent.getStringExtra("userEmail");
-        model.setLoginEmail(email);
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.set(Calendar.YEAR, year);
-        mCalendar.set(Calendar.MONTH, month);
-        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(mCalendar.getTime());
-        //tvDate.setText(selectedDate);
-        System.out.println("selected date " + selectedDate);
-        model.setDateOfBirth(selectedDate);
-    }
+
 
 
 }

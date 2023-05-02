@@ -99,19 +99,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
                     if (position != RecyclerView.NO_POSITION){
                         Movie selectedMovie =  movieList.get(position);
-
-
                         Intent i = new Intent(context, MovieContentActivity.class);
-
-                        i.putExtra("movie", "sdfsdfs");
+                        i.putExtra("movie", selectedMovie);
                         context.startActivity(i);
-
                     }
-                   // context.startActivity(new Intent(context,SignUpActivity.class));
-
                 }
             });
-
         }
     }
 }

@@ -3,8 +3,10 @@ package com.example.moviemate;
 import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
         firebaseAuthentication();
+
     }
     public void firebaseAuthentication()
     {
@@ -46,25 +49,34 @@ public class LoginActivity extends AppCompatActivity {
         Button loginButton =findViewById(R.id.signinButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {String txt_Email = emailEditText.getText().toString();
-                String txt_Pwd = passwordEditText.getText().toString();
-                if (txt_Email == null || txt_Email == "")
-                {
-                    toastMsg("Invalid username");
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this,
+                        LaunchActivity.class));
+               /* String txt_Email = emailEditText.getText().toString().trim();
+                String txt_Pwd = passwordEditText.getText().toString().trim();
+                if(TextUtils.isEmpty(txt_Email)) {
+                    toastMsg("Please enter Email");
+                    return;
                 }
-                else {
-                    loginUser(txt_Email, txt_Pwd);
+
+                if(TextUtils.isEmpty(txt_Pwd)) {
+                    toastMsg("Please enter Password");
+                    return;
                 }
+
+                loginUser(txt_Email, txt_Pwd);*/
+
             }
         });
     }
 
 
     private void loginUser(String txt_email, String txt_pwd) {
-
+        startActivity(new Intent(LoginActivity.this,
+                LaunchActivity.class));
 
         // call the object and provide it with email id and password
-        auth.signInWithEmailAndPassword(txt_email,
+       /* auth.signInWithEmailAndPassword(txt_email,
                 txt_pwd).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
@@ -79,9 +91,10 @@ public class LoginActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "Error");
+                toastMsg("Login Failed");
+                return;
             }
-        });
+        });*/
     }
 
     public void toastMsg(String message){

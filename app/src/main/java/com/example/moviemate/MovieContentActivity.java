@@ -1,21 +1,24 @@
 package com.example.moviemate;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.moviemate.model.Movie;
+import com.google.gson.Gson;
+
 public class MovieContentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_content);
-        // calling the action bar
         ActionBar actionBar = getSupportActionBar();
-
-        // showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
+        Movie movie = (Movie) getIntent().getSerializableExtra("movie");
 
 
     }
