@@ -1,5 +1,7 @@
 package com.example.moviemate.fragment;
-
+import com.example.moviemate.DatePicker;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -31,6 +34,10 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+import android.app.DatePickerDialog.OnDateSetListener;
+
 public class InfoFragment extends Fragment {
     private DatabaseReference mDatabaseRef;
     private InfoFragmentBinding binding;
@@ -47,8 +54,7 @@ public class InfoFragment extends Fragment {
         View view = binding.getRoot();
 
         System.out.println(requireActivity());
-        UserViewModel model = new
-                ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        UserViewModel model = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         model.getLoginEmail().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -57,12 +63,26 @@ public class InfoFragment extends Fragment {
             }
         });
 
-       // readDataFromFirebase(model.getLoginEmail().getValue());
+        model.getDateOfBirth().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                System.out.println("date of birth" + s);
+                binding.editDob.setText(s);
+            }
+        });
+
 
         //Add genre spinner
         createGenreSpinner();
         createTheaterSpinner();
-
+        //DatePickerDialog
+        binding.editDob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("Clicked on edit date of birth");
+                pickDateOfBirth();
+            }
+        });
         binding.buttonSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String newName=binding.editPersonName.getText().toString();
@@ -89,8 +109,13 @@ public class InfoFragment extends Fragment {
                     }
                 });
             } });
+
+        // Initialize the listener
+
+
         return view;
     }
+
 
     private void readDataFromFirebase(String email)
     {
@@ -169,6 +194,13 @@ public class InfoFragment extends Fragment {
 
         final ArrayAdapter<String> theaterAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item, list);
         genreSpinner.setAdapter(theaterAdapter);
+    }
+
+    private void pickDateOfBirth()
+    {
+        //DialogFragment
+        DatePicker mDatePickerDialogFragment = new DatePicker();
+        mDatePickerDialogFragment.show(getChildFragmentManager(), DatePicker.TAG);
     }
 
     @Override

@@ -13,20 +13,23 @@
     <LinearLayout
         android:id="@+id/top_container"
         android:layout_width="match_parent"
-        android:layout_height="211dp"
+        android:layout_height="118dp"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="visible"
         tools:visibility="visible">
 
-        <ImageView
-            android:id="@+id/profile_picture"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="false"
-            android:cropToPadding="false"
+            android:shadowColor="#1B1818"
+            android:text="Edit Personal Info"
+            android:textAlignment="center"
+            android:textColor="#DCE0E3"
+            android:textSize="24sp"
+            android:textStyle="bold"
             android:visibility="visible"
-            tools:srcCompat="@tools:sample/avatars"
             tools:visibility="visible" />
     </LinearLayout>
 
@@ -45,10 +48,24 @@
             android:layout_height="69dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
+            android:text="First Name"
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
-            android:textSize="24sp"
+            android:textSize="20sp"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <EditText
+            android:id="@+id/edit_lastName"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="match_parent"
+            android:layout_height="69dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Last Name"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="20sp"
             android:visibility="visible"
             tools:visibility="visible" />
 
@@ -58,10 +75,10 @@
             android:layout_height="69dp"
             android:ems="10"
             android:inputType="datetime"
-            android:text="10/10/1223"
+            android:text="Date OF Birth"
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:visibility="visible"
             tools:visibility="visible" />
 
@@ -81,7 +98,8 @@
             android:textSize="50dp"
             android:verticalScrollbarPosition="right"
             android:visibility="visible"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            />
 
         <Spinner
             android:id="@+id/spinner_theater"
@@ -99,6 +117,15 @@
             android:textSize="50dp"
             android:verticalScrollbarPosition="right"
             android:visibility="visible"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enter Date of Birth"
+            android:visibility="visible"
+            app:rippleColor="#FFCDD2"
             tools:visibility="visible" />
 
     </LinearLayout>

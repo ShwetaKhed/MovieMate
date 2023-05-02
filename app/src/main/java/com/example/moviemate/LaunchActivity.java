@@ -1,6 +1,7 @@
 package com.example.moviemate;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,7 +32,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LaunchActivity extends AppCompatActivity {
+import android.widget.DatePicker;
+import java.text.DateFormat;
+import java.util.Calendar;
+
+public class LaunchActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private LaunchScreenBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
     private UserViewModel model;
@@ -65,7 +70,17 @@ public class LaunchActivity extends AppCompatActivity {
         model.setLoginEmail(email);
     }
 
-
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar mCalendar = Calendar.getInstance();
+        mCalendar.set(Calendar.YEAR, year);
+        mCalendar.set(Calendar.MONTH, month);
+        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(mCalendar.getTime());
+        //tvDate.setText(selectedDate);
+        System.out.println("selected date " + selectedDate);
+        model.setDateOfBirth(selectedDate);
+    }
 
 
 }

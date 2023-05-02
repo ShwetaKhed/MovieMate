@@ -1,18 +1,24 @@
 package com.example.moviemate;
 
+import java.util.Date;
+
 public class User {
     String email;
-    String name;
+    String firstName;
+
+    String lastName;
     String dob;
     String genrePreference;
     String theaterPreference;
 
+    Date dateOfBirth;
+
     public User() {
     }
 
-    public User(String email, String name, String dob, String genrePreference, String theaterPreference) {
+    public User(String email, String firstName, String dob, String genrePreference, String theaterPreference) {
         this.email = email;
-        this.name = name;
+        this.firstName = firstName;
         this.dob = dob;
         this.genrePreference = genrePreference;
         this.theaterPreference = theaterPreference;
@@ -26,12 +32,12 @@ public class User {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getDob() {
@@ -56,5 +62,21 @@ public class User {
 
     public void setTheaterPreference(String theaterPreference) {
         this.theaterPreference = theaterPreference;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }
