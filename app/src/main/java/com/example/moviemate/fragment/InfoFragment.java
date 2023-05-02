@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -75,14 +76,19 @@ public class InfoFragment extends Fragment {
         //Add genre spinner
         createGenreSpinner();
         createTheaterSpinner();
-        //DatePickerDialog
-        binding.editDob.setOnClickListener(new View.OnClickListener() {
+        binding.editDob.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                System.out.println("Clicked on edit date of birth");
-                pickDateOfBirth();
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    System.out.println("Clicked on edit date of birth");
+                    pickDateOfBirth();
+                    // Do what you want
+                    return true;
+                }
+                return false;
             }
         });
+
         binding.buttonSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String newName=binding.editPersonName.getText().toString();
@@ -109,9 +115,6 @@ public class InfoFragment extends Fragment {
                     }
                 });
             } });
-
-        // Initialize the listener
-
 
         return view;
     }

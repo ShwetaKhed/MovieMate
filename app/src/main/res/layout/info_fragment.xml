@@ -62,7 +62,7 @@
             android:layout_height="69dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Last Name"
+            android:text="Enter Last Name"
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textSize="20sp"
@@ -71,16 +71,19 @@
 
         <EditText
             android:id="@+id/edit_dob"
+
             android:layout_width="match_parent"
             android:layout_height="69dp"
             android:ems="10"
-            android:inputType="datetime"
+            android:inputType="date|datetime"
             android:text="Date OF Birth"
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textSize="20sp"
             android:visibility="visible"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            android:hint="Enter DOB"
+           />
 
         <Spinner
             android:id="@+id/spinner_genre"
@@ -117,15 +120,6 @@
             android:textSize="50dp"
             android:verticalScrollbarPosition="right"
             android:visibility="visible"
-            tools:visibility="visible" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Enter Date of Birth"
-            android:visibility="visible"
-            app:rippleColor="#FFCDD2"
             tools:visibility="visible" />
 
     </LinearLayout>
