@@ -48,12 +48,13 @@
             android:layout_height="69dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="First Name"
+            android:text="Enter First Name"
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textSize="20sp"
             android:visibility="visible"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            />
 
         <EditText
             android:id="@+id/edit_lastName"
@@ -76,7 +77,6 @@
             android:layout_height="69dp"
             android:ems="10"
             android:inputType="date|datetime"
-            android:text="Date OF Birth"
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
             android:textSize="20sp"

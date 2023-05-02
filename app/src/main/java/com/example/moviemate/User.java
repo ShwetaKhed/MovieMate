@@ -5,20 +5,18 @@ import java.util.Date;
 public class User {
     String email;
     String firstName;
-
     String lastName;
     String dob;
     String genrePreference;
     String theaterPreference;
 
-    Date dateOfBirth;
-
     public User() {
     }
 
-    public User(String email, String firstName, String dob, String genrePreference, String theaterPreference) {
+    public User(String email, String firstName, String lastName, String dob, String genrePreference, String theaterPreference) {
         this.email = email;
         this.firstName = firstName;
+        this.lastName = lastName;
         this.dob = dob;
         this.genrePreference = genrePreference;
         this.theaterPreference = theaterPreference;
@@ -68,15 +66,7 @@ public class User {
         return lastName;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
     }
 }

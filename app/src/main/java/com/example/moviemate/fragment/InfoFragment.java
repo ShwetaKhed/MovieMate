@@ -72,7 +72,6 @@ public class InfoFragment extends Fragment {
             }
         });
 
-
         //Add genre spinner
         createGenreSpinner();
         createTheaterSpinner();
@@ -91,7 +90,8 @@ public class InfoFragment extends Fragment {
 
         binding.buttonSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String newName=binding.editPersonName.getText().toString();
+                String firstName=binding.editPersonName.getText().toString();
+                String lastName=binding.editLastName.getText().toString();
                 String newDob=binding.editDob.getText().toString();
                 String genrePreference = binding.spinnerGenre.getSelectedItem().toString();
                 String theaterPreference = binding.spinnerTheater.getSelectedItem().toString();
@@ -105,7 +105,33 @@ public class InfoFragment extends Fragment {
                 //Get the data before @ in the email address and consider it as the username of the user
                 String username = email.split("@")[0];
 
-                User user = new User(email, newName, newDob, genrePreference, theaterPreference );
+                if(firstName == null ||firstName.isEmpty())
+                {
+                    Toast.makeText(getContext() , "Please enter your first name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(lastName == null ||lastName.isEmpty())
+                {
+                    Toast.makeText(getContext() , "Please enter your last name", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(newDob == null ||newDob.isEmpty())
+                {
+                    Toast.makeText(getContext() , "Please enter your date of birth", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(genrePreference == null ||genrePreference.isEmpty() || genrePreference.equals("Select Genre Preference"))
+                {
+                    Toast.makeText(getContext() , "Please enter your genre Preference", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(theaterPreference == null ||theaterPreference.isEmpty() || theaterPreference.equals("Select Theater Preference"))
+                {
+                    Toast.makeText(getContext() , "Please enter your genre Preference", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                User user = new User(email, firstName, lastName, newDob, genrePreference, theaterPreference );
 
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users");
                 mDatabaseRef.child(username).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -141,12 +167,20 @@ public class InfoFragment extends Fragment {
                         Toast.makeText(getContext(), "Successfully Read", Toast.LENGTH_SHORT).show();
                         DataSnapshot dataSnapshot = task.getResult();
                         String email = String.valueOf(dataSnapshot.child("email").getValue());
-                        String name = String.valueOf(dataSnapshot.child("name").getValue());
-                        System.out.println("email : " + email + " and name" + name);
-                        binding.editPersonName.setText(name);
+                        String firstname = String.valueOf(dataSnapshot.child("firstName").getValue());
+                        String lastname = String.valueOf(dataSnapshot.child("lastName").getValue());
+                        String dob = String.valueOf(dataSnapshot.child("dob").getValue());
+                        String genrePreference = String.valueOf(dataSnapshot.child("genrePreference").getValue());
+                        String theaterPreference = String.valueOf(dataSnapshot.child("theaterPreference").getValue());
+                        System.out.println("email : " + email + " and name" + firstname);
+                        binding.editPersonName.setText(firstname);
+                        binding.editLastName.setText(lastname);
+                        binding.editDob.setText(dob);
+                        setSpinnerValue(binding.spinnerGenre, genrePreference);
+                        setSpinnerValue(binding.spinnerTheater, theaterPreference);
                     }
                    else {
-                        //data for this user didnot exist
+                        //data for this user didn't exist
                         //show empty blanks here
                     }
                     //
@@ -166,6 +200,7 @@ public class InfoFragment extends Fragment {
     {
         Spinner genreSpinner =binding.spinnerGenre;
         List<String> list = new ArrayList<String>();
+        list.add("Select Genre Preference");
         list.add("Comedy");
         list.add("Horror");
         list.add("Action");
@@ -186,10 +221,12 @@ public class InfoFragment extends Fragment {
             }
         });
     }
+
     private void createTheaterSpinner()
     {
         Spinner genreSpinner =binding.spinnerTheater;
         List<String> list = new ArrayList<String>();
+        list.add("Select Theater Preference");
         list.add("Henkel Street Cinema");
         list.add("Mystery Radio Theatre");
         list.add("HOYTS Melbourne Central");
@@ -197,6 +234,14 @@ public class InfoFragment extends Fragment {
 
         final ArrayAdapter<String> theaterAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item, list);
         genreSpinner.setAdapter(theaterAdapter);
+    }
+
+    private void setSpinnerValue(Spinner spinner, String value)
+    {
+        ArrayAdapter myAdapter = (ArrayAdapter) spinner.getAdapter(); //cast to an ArrayAdapter
+        int spinnerPosition = myAdapter.getPosition(value);
+        //set the default according to the value
+        spinner.setSelection(spinnerPosition);
     }
 
     private void pickDateOfBirth()
