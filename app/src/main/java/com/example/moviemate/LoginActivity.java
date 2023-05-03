@@ -50,9 +50,9 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,
-                        LaunchActivity.class));
-               /* String txt_Email = emailEditText.getText().toString().trim();
+                /*startActivity(new Intent(LoginActivity.this,
+                        LaunchActivity.class));*/
+                String txt_Email = emailEditText.getText().toString().trim();
                 String txt_Pwd = passwordEditText.getText().toString().trim();
                 if(TextUtils.isEmpty(txt_Email)) {
                     toastMsg("Please enter Email");
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                loginUser(txt_Email, txt_Pwd);*/
+                loginUser(txt_Email, txt_Pwd);
 
             }
         });
