@@ -2,4 +2,7 @@
     <string name="app_name">Movie Mate</string>
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="mapbox_access_token">pk.eyJ1Ijoic2h3ZXR6aW5nIiwiYSI6ImNsaDZieThwZjA0aWozcXFtYWdncDBrOGEifQ.lg0qOE0d64Rfeh305RM2eQ</string>
+    <string name="title_activity_map">MapActivity</string>
 </resources>

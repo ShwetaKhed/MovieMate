@@ -11,7 +11,7 @@
         android:name="com.example.moviemate.fragment.HomeFragment" />
     <fragment
         android:id="@+id/nav_setting_fragment"
-        android:name="com.example.moviemate.fragment.SettingFragment" />
+        android:name="com.example.moviemate.MapActivity" />
     <fragment
         android:id="@+id/nav_report_fragment"
         android:name="com.example.moviemate.fragment.ReportFragment" />
