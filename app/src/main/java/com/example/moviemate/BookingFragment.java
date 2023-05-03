@@ -27,9 +27,6 @@ import retrofit2.Response;
 
 public class BookingFragment extends Fragment {
 
-    ArrayList courseName = new ArrayList<>();
-
-    ArrayList img = new ArrayList<>();
 
     ArrayList<Movie> finalMovieList = new ArrayList<Movie>();
     Context context;
@@ -73,7 +70,6 @@ public class BookingFragment extends Fragment {
                     movie.setOriginalTitle(movieList.getResults().get(i).getOriginalTitle());
                     movie.setPosterPath("http://image.tmdb.org/t/p/w500" + movieList.getResults().get(i).getPosterPath());
                     movie.setReleaseDate(movieList.getResults().get(i).getReleaseDate());
-                    movie.setOverview(movieList.getResults().get(i).getOverview());
                     movie.setOverview(movieList.getResults().get(i).getOverview());
                     finalMovieList.add(movie);
                 }

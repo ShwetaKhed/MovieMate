@@ -21,6 +21,15 @@ public class Movie implements Serializable {
     @SerializedName("adult")
     private String adult;
 
+    @SerializedName("popularity")
+    private String popularity;
+
+    @SerializedName("original_language")
+    private String original_language;
+
+    @SerializedName("id")
+    private String id;
+
 
     public void setOriginalTitle(String originalTitle) {
         this.originalTitle = originalTitle;
@@ -61,5 +70,29 @@ public class Movie implements Serializable {
 
     public void setAdult(String adult) {
         this.adult = adult;
+    }
+
+    public String getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(String popularity) {
+        this.original_language = original_language;
+    }
+
+    public String getOriginal_language() {
+        return original_language;
+    }
+
+    public void setOriginal_language(String original_language) {
+        this.original_language = original_language;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

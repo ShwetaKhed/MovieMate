@@ -1,6 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:onClick="onClick"
+        android:id="@+id/bar_lay"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="vertical">
+
+        <!--<ImageView
+            android:layout_gravity="center"
+            android:src="@drawable/ic_algorithm"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:id="@+id/first_icon"/>-->
+
+        <TextView
+            android:id="@+id/bar_chart"
+            android:textColor="#FFFF"
+            android:layout_marginTop="3dp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Bar Chart"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:onClick="onClick"
+        android:id="@+id/pie_lay"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="vertical">
+<!--
+
+        <ImageView
+            android:layout_gravity="center"
+            android:src="@drawable/ic_course"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:id="@+id/sec_icon"/>
+-->
+
+        <TextView
+            android:id="@+id/pie_chart"
+            android:textColor="#FFFF"
+            android:layout_marginTop="3dp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Pie Chart"
+            />
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
