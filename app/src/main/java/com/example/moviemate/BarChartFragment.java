@@ -30,6 +30,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,39 +41,7 @@ import retrofit2.Response;
 
 public class BarChartFragment extends Fragment {
     private FragmentBarReportBinding binding;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        FragmentBarReportBinding binding =
-                FragmentBarReportBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-
-        List<BarEntry> movieEntries = new ArrayList<>();
-        movieEntries.add(new BarEntry(0, 100));
-        movieEntries.add(new BarEntry(1, 48));
-        movieEntries.add(new BarEntry(2, 23));
-        movieEntries.add(new BarEntry(3, 84));
-        movieEntries.add(new BarEntry(4, 11));
-        movieEntries.add(new BarEntry(5, 68));
-        movieEntries.add(new BarEntry(6, 55));
-
-        BarDataSet barDataSet = new BarDataSet(movieEntries, "Popularity");
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-
-        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-        List<String> xAxisValues = new ArrayList<>(Arrays.asList("Super Mario", "Scream", "65","Supercell", "Sisu", "Momias","Viejos"));
-
-        binding.barChart.getX();
-
-    }
-
-
-
-
-
-
-
-/*    ArrayList<Movie> finalMovieList = new ArrayList<Movie>();
+    ArrayList<Movie> finalMovieList = new ArrayList<Movie>();
     Context context;
     public BarChartFragment(){}
 
@@ -93,6 +62,39 @@ public class BarChartFragment extends Fragment {
     {
 
         super.onViewCreated(view, savedInstanceState);
+
+
+        List<BarEntry> movieEntries = new ArrayList<>();
+        movieEntries.add(new BarEntry(0, 100));
+        movieEntries.add(new BarEntry(1, 48));
+        movieEntries.add(new BarEntry(2, 23));
+        movieEntries.add(new BarEntry(3, 84));
+        movieEntries.add(new BarEntry(4, 11));
+
+
+        BarDataSet barDataSet = new BarDataSet(movieEntries, "Popularity");
+        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        List<String> xAxisValues = new ArrayList<>(Arrays.asList("Mo", "S", "65","Su", "Si"));
+
+        binding.barChart.getX();
+        binding.barChart.getXAxis().setValueFormatter(new
+                com.github.mikephil.charting.formatter.IndexAxisValueFormatter(xAxisValues));
+
+        BarData barData = new BarData(barDataSet);
+        binding.barChart.setData(barData);
+        barData.setBarWidth(1.0f);
+        binding.barChart.setVisibility(View.VISIBLE);
+        binding.barChart.animateY(4000);
+        //description will be displayed as "Description Label" if not provided
+        Description description = new Description();
+        description.setText("Popularity for Each Movie");
+        binding.barChart.setDescription(description);
+        //refresh the chart
+        binding.barChart.invalidate();
+
+
         Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().
                 getPopularMovies();
         call.enqueue(new Callback<MovieResult>() {
@@ -115,5 +117,5 @@ public class BarChartFragment extends Fragment {
             }
 
         });
-    }*/
+    }
 }
