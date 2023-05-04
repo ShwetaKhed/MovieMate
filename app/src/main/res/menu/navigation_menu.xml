@@ -5,20 +5,25 @@
 
     <item
         android:id="@+id/nav_booking_fragment"
-
         android:title="Home" />
     <item
         android:id="@+id/nav_info_fragment"
-
         android:title="Profile" />
     <item
         android:id="@+id/nav_map_fragment"
-
         android:title="Map" />
-    <item
-        android:id="@+id/nav_report_fragment"
 
-        android:title="Report" />
+
+    <item android:title="Report">
+        <menu>
+            <item
+                android:id="@+id/nav_bar_fragment"
+                android:title="Bar Chart" />
+            <item
+                android:id="@+id/nav_pie_fragment"
+                android:title="Pie Chart" />
+        </menu>
+    </item>
 
 
 </menu>
