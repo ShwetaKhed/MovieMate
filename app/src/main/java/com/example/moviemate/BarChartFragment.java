@@ -1,6 +1,7 @@
 package com.example.moviemate;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -23,6 +24,8 @@ import com.example.moviemate.model.Movie;
 import com.example.moviemate.model.MovieResult;
 import com.example.moviemate.service.RetrofitClient;
 import com.example.moviemate.viewmodel.SharedViewModel;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -75,18 +78,26 @@ public class BarChartFragment extends Fragment {
         BarDataSet barDataSet = new BarDataSet(movieEntries, "Popularity");
         barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
+        Legend legend = binding.barChart.getLegend();
+        legend.setTextColor(Color.WHITE);
+
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-        List<String> xAxisValues = new ArrayList<>(Arrays.asList("Mo", "S", "65","Su", "Si"));
+        List<String> xAxisValues = new ArrayList<>(Arrays.asList("Mv1", "Mv2", "Mv3", "Mv4", "Mv5"));
 
         binding.barChart.getX();
+        XAxis xAxis = binding.barChart.getXAxis();
         binding.barChart.getXAxis().setValueFormatter(new
                 com.github.mikephil.charting.formatter.IndexAxisValueFormatter(xAxisValues));
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextColor(Color.WHITE);
 
         BarData barData = new BarData(barDataSet);
         binding.barChart.setData(barData);
         barData.setBarWidth(1.0f);
         binding.barChart.setVisibility(View.VISIBLE);
         binding.barChart.animateY(4000);
+
+
         //description will be displayed as "Description Label" if not provided
         Description description = new Description();
         description.setText("Popularity for Each Movie");

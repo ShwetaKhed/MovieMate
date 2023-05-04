@@ -47,12 +47,29 @@
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart"
-        android:layout_width="401dp"
-        android:layout_height="522dp"
+        android:textColor="#FFFFFF"
+        android:layout_width="343dp"
+        android:layout_height="494dp"
         android:layout_margin="10dp"
-        tools:ignore="MissingClass"
-        tools:layout_editor_absoluteX="4dp"
-        tools:layout_editor_absoluteY="179dp" />
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="255dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="38dp"
+        tools:ignore="MissingConstraints"/>
+
+    <TextView
+        android:id="@+id/barGraphTitle"
+        android:layout_width="344dp"
+        android:layout_height="39dp"
+        android:text="Popularity of Movies for the Selected Date/Time"
+        android:textColor="#FFFFFF"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="43dp"
+        tools:visibility="visible"
+        tools:ignore="MissingConstraints"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
