@@ -62,7 +62,7 @@ public class BarChartFragment extends Fragment {
         ArrayList<IBarDataSet> dataSets = new ArrayList<>();
         List<String> xAxisValues = new ArrayList<>(Arrays.asList("Super Mario", "Scream", "65","Supercell", "Sisu", "Momias","Viejos"));
 
-
+        binding.barChart.getX();
 
     }
 
