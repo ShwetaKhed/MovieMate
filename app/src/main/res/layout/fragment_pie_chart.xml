@@ -1,13 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:orientation="horizontal">
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".MainActivity">
 
 
+    <EditText
+        android:id="@+id/startDate"
+        android:layout_width="150dp"
+        android:layout_height="53dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="215dp"
+        android:background="@color/white"
+        android:hint="Start Date"
+        android:inputType="date|datetime"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.061"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/endDate"
+        android:layout_width="150dp"
+        android:layout_height="53dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="215dp"
+        android:background="@color/white"
+        android:hint="End Date"
+        android:inputType="date|datetime"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.881"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="371dp"
+        android:layout_height="254dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="255dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="24dp"
+        tools:ignore="MissingConstraints" />
 
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
