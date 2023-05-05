@@ -1,52 +1,52 @@
 package com.example.moviemate;
 
+
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.LayoutInflater;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
+
+
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
+
 
 import com.example.moviemate.databinding.LaunchScreenBinding;
-import com.example.moviemate.model.MovieResult;
-import com.example.moviemate.service.RetrofitClient;
+
 import com.example.moviemate.viewmodel.UserViewModel;
-import com.google.android.gms.maps.MapFragment;
+
 import com.google.android.material.navigation.NavigationView;
+
 import com.mapbox.geojson.Point;
+
+
+
 import com.mapbox.maps.CameraOptions;
 import com.mapbox.maps.MapView;
+
 import com.mapbox.maps.Style;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import android.widget.DatePicker;
 import java.text.DateFormat;
 import java.util.Calendar;
+
 
 public class LaunchActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private LaunchScreenBinding binding;
@@ -54,9 +54,8 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
     NavigationView nav_view;
     private UserViewModel model;
 
-    private MapView mapView;
+    MapView mapView;
 
-    private View mapFragment;
 
 
     @Override
@@ -69,6 +68,11 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         View view = binding.getRoot();
         setContentView(view);
         nav_view = findViewById(R.id.nav_view);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view1 = inflater.inflate(R.layout.maps_fragment, null);
+        MapView mapView = view1.findViewById(R.id.mapView);
+
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_booking_fragment,
@@ -123,11 +127,18 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         View view = inflater.inflate(R.layout.maps_fragment, null);
         mapView = view.findViewById(R.id.mapView);
         final Point point = Point.fromLngLat(145.045837, -37.876823 );
+        mapView = findViewById(R.id.mapView);
         CameraOptions cameraPosition = new CameraOptions.Builder()
                 .zoom(13.0)
                 .center(point)
                 .build();
-        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS);
-        mapView.getMapboxMap().setCamera(cameraPosition);
+    /*    mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS);
+        mapView.getMapboxMap().setCamera(cameraPosition);*/
+
+
     }
+
+
+
+
 }

@@ -8,17 +8,14 @@ import android.view.ViewGroup;
 
 
 import androidx.fragment.app.Fragment;
-import com.mapbox.geojson.Point;
 
-import com.mapbox.maps.CameraOptions;
-import com.mapbox.maps.MapView;
-import com.mapbox.maps.MapboxMap;
-import com.mapbox.maps.Style;
+import com.google.android.gms.maps.MapView;
+
 
 
 public class MapActivity extends Fragment {
     private MapView mapView;
-    private MapboxMap mapboxMap;
+    //private MapboxMap mapboxMap;
 
     Context context;
     @Override
@@ -37,7 +34,7 @@ public class MapActivity extends Fragment {
 
         View view = inflater.inflate(R.layout.maps_fragment,container,false);
 
-        final Point point = Point.fromLngLat(145.045837, -37.876823 );
+      /*  final Point point = Point.fromLngLat(145.045837, -37.876823 );
         mapView = view.findViewById(R.id.mapView);
 
         CameraOptions cameraPosition = new CameraOptions.Builder()
@@ -46,7 +43,7 @@ public class MapActivity extends Fragment {
                 .build();
         mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS);
         mapView.getMapboxMap().setCamera(cameraPosition);
-
+*/
         return view;
     }
 

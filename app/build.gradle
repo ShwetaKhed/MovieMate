@@ -89,8 +89,15 @@ dependencies {
     implementation ('com.mapbox.maps:android:10.12.1'){
         exclude group: 'group_name', module: 'module_name'
     }
+  /*  implementation 'com.mapbox.maps:android:10.9.1'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.26.0'
+    implementation "com.mapbox.mapboxsdk:mapbox-android-sdk:6.7.0"
+    implementation 'com.mapbox.mapboxsdk:mapbox-sdk-geojson:6.9.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-sdk-services:6.9.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-sdk-turf:6.9.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-sdk-core:6.9.0'*/
     implementation "com.google.accompanist:accompanist-pager:0.13.0"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    
+
 }

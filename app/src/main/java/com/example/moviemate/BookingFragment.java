@@ -70,6 +70,8 @@ public class BookingFragment extends Fragment {
                     movie.setOriginalTitle(movieList.getResults().get(i).getOriginalTitle());
                     movie.setPosterPath("http://image.tmdb.org/t/p/w500" + movieList.getResults().get(i).getPosterPath());
                     movie.setReleaseDate(movieList.getResults().get(i).getReleaseDate());
+                    movie.setAdult(movieList.getResults().get(i).getAdult());
+                    movie.setOriginal_language(movieList.getResults().get(i).getOriginal_language());
                     movie.setOverview(movieList.getResults().get(i).getOverview());
                     finalMovieList.add(movie);
                 }
