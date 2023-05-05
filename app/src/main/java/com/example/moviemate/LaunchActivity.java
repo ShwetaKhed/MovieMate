@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moviemate.databinding.LaunchScreenBinding;
 import com.example.moviemate.model.MovieResult;
 import com.example.moviemate.service.RetrofitClient;
+import com.example.moviemate.viewmodel.UserViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -36,10 +37,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LaunchActivity extends AppCompatActivity {
+import android.widget.DatePicker;
+import java.text.DateFormat;
+import java.util.Calendar;
+
+public class LaunchActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private LaunchScreenBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
     NavigationView nav_view;
+    private UserViewModel model;
 
 
     @Override
@@ -66,14 +72,22 @@ public class LaunchActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
         NavigationUI.setupWithNavController(binding.appBar.toolbar, navController,
                 mAppBarConfiguration);
-        Button sign_out = findViewById(R.id.footer_item_1);
-        sign_out.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LaunchActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+
+        model = new ViewModelProvider(this).get(UserViewModel.class);
+        Intent intent=getIntent();
+        String email = intent.getStringExtra("userEmail");
+        model.setLoginEmail(email);
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar mCalendar = Calendar.getInstance();
+        mCalendar.set(Calendar.YEAR, year);
+        mCalendar.set(Calendar.MONTH, month);
+        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(mCalendar.getTime());
+        //tvDate.setText(selectedDate);
+        System.out.println("selected date " + selectedDate);
+        model.setDateOfBirth(selectedDate);
     }
 }
