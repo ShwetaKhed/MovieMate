@@ -3,6 +3,7 @@ package com.example.moviemate;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,19 +56,19 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
 
     private MapView mapView;
 
+    private View mapFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        nav_view = findViewById(R.id.nav_view);
-
 
         binding = LaunchScreenBinding.inflate(getLayoutInflater());
 
+
         View view = binding.getRoot();
         setContentView(view);
-
-
+        nav_view = findViewById(R.id.nav_view);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_booking_fragment,
@@ -82,7 +83,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                 fragmentManager.findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(binding.navView, navController);
-        NavigationUI.setupWithNavController(binding.appBar.toolbar, navController,
+        NavigationUI.setupWithNavController(binding.appBar.toolbar1, navController,
                 mAppBarConfiguration);
 
         model = new ViewModelProvider(this).get(UserViewModel.class);
@@ -99,7 +100,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                 finish();
             }
         });
-        //launchMaps();
+        launchMaps(this);
 
 
     }
@@ -116,19 +117,17 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         model.setDateOfBirth(selectedDate);
     }
 
-    public void launchMaps() {
+    public void launchMaps(Context context) {
 
-
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.maps_fragment, null);
+        mapView = view.findViewById(R.id.mapView);
         final Point point = Point.fromLngLat(145.045837, -37.876823 );
-        mapView = findViewById(R.id.mapView);
-
         CameraOptions cameraPosition = new CameraOptions.Builder()
                 .zoom(13.0)
                 .center(point)
                 .build();
         mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS);
         mapView.getMapboxMap().setCamera(cameraPosition);
-
-
     }
 }
