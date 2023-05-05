@@ -20,8 +20,8 @@
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/navigation_menu" >
     <Button
-        android:id="@+id/footer_item_1"
-        android:layout_width="match_parent"
+        android:id="@+id/sign_out"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:text="Sign Out" />

@@ -1,5 +1,6 @@
 package com.example.moviemate;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -28,7 +29,12 @@ import com.example.moviemate.databinding.LaunchScreenBinding;
 import com.example.moviemate.model.MovieResult;
 import com.example.moviemate.service.RetrofitClient;
 import com.example.moviemate.viewmodel.UserViewModel;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.mapbox.geojson.Point;
+import com.mapbox.maps.CameraOptions;
+import com.mapbox.maps.MapView;
+import com.mapbox.maps.Style;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,15 +53,21 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
     NavigationView nav_view;
     private UserViewModel model;
 
+    private MapView mapView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         nav_view = findViewById(R.id.nav_view);
 
+
         binding = LaunchScreenBinding.inflate(getLayoutInflater());
+
         View view = binding.getRoot();
         setContentView(view);
+
+
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_booking_fragment,
@@ -77,6 +89,19 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         Intent intent=getIntent();
         String email = intent.getStringExtra("userEmail");
         model.setLoginEmail(email);
+
+        Button sign_out = findViewById(R.id.sign_out);
+        sign_out.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LaunchActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        //launchMaps();
+
+
     }
 
     @Override
@@ -89,5 +114,21 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         //tvDate.setText(selectedDate);
         System.out.println("selected date " + selectedDate);
         model.setDateOfBirth(selectedDate);
+    }
+
+    public void launchMaps() {
+
+
+        final Point point = Point.fromLngLat(145.045837, -37.876823 );
+        mapView = findViewById(R.id.mapView);
+
+        CameraOptions cameraPosition = new CameraOptions.Builder()
+                .zoom(13.0)
+                .center(point)
+                .build();
+        mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS);
+        mapView.getMapboxMap().setCamera(cameraPosition);
+
+
     }
 }

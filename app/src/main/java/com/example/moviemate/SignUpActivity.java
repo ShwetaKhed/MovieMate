@@ -1,8 +1,10 @@
 package com.example.moviemate;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.moviemate.databinding.ActivityMainBinding;
+import com.example.moviemate.databinding.LaunchScreenBinding;
+import com.example.moviemate.databinding.SignupBinding;
 import com.example.moviemate.viewmodel.SharedViewModel;
 import com.example.moviemate.viewmodel.UserViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,13 +26,38 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class SignUpActivity extends AppCompatActivity {
+import java.text.DateFormat;
+import java.util.Calendar;
+
+public class SignUpActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     private FirebaseAuth auth;
+    private SignupBinding binding;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.signup);
+        binding = SignupBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+        binding.editDob.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    System.out.println("Clicked on edit date of birth");
+                    pickDateOfBirth();
+                    // Do what you want
+                    return true;
+                }
+                return false;
+            }
+        });
         firebaseAuthentication();
+    }
+
+    private void pickDateOfBirth()
+    {
+        //DialogFragment
+        DatePicker mDatePickerDialogFragment = new DatePicker();
+        mDatePickerDialogFragment.show(this.getSupportFragmentManager(), DatePicker.TAG);
     }
 
     public void firebaseAuthentication() {
@@ -81,9 +111,11 @@ public class SignUpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     String msg = "Registration Successful";
-                    Intent intent = new Intent(SignUpActivity.this, LaunchActivity.class);
+                    /*Intent intent = new Intent(SignUpActivity.this, LaunchActivity.class);
                     intent.putExtra("userEmail", email_txt);
 
+                    startActivity(intent);*/
+                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                     startActivity(intent);
                 } else {
                     System.out.println(task.getException());
@@ -93,10 +125,20 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
-
     public void toastMsg(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar mCalendar = Calendar.getInstance();
+        mCalendar.set(Calendar.YEAR, year);
+        mCalendar.set(Calendar.MONTH, month);
+        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(mCalendar.getTime());
+        //tvDate.setText(selectedDate);
+        System.out.println("selected date " + selectedDate);
+        //model.setDateOfBirth(selectedDate);
+        binding.editDob.setText(selectedDate);
+    }
 }
-
-

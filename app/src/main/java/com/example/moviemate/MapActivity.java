@@ -14,7 +14,6 @@ import com.mapbox.maps.CameraOptions;
 import com.mapbox.maps.MapView;
 import com.mapbox.maps.MapboxMap;
 import com.mapbox.maps.Style;
-import com.mapbox.maps.plugin.Plugin;
 
 
 public class MapActivity extends Fragment {
