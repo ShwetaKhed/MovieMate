@@ -1,6 +1,7 @@
 package com.example.moviemate;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +14,14 @@ import com.example.moviemate.databinding.FragmentPieChartBinding;
 import com.example.moviemate.model.Movie;
 import com.example.moviemate.model.MovieResult;
 import com.example.moviemate.service.RetrofitClient;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,10 +49,9 @@ public class PieChartFragment extends Fragment {
     public void onViewCreated(View view,
                               Bundle savedInstanceState)
     {
-
         super.onViewCreated(view, savedInstanceState);
         Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().
-                getPopularMovies();
+                getPopularMovies1("6f6d1b438fddb937dd48a7f88b87eae7", "2");
         call.enqueue(new Callback<MovieResult>() {
             @Override
             public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
@@ -66,5 +72,25 @@ public class PieChartFragment extends Fragment {
             }
 
         });
+        PieChart pieChart = view.findViewById(R.id.pieChart1);
+        List<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(30f, "Slice 1"));
+        entries.add(new PieEntry(20f, "Slice 2"));
+        entries.add(new PieEntry(50f, "Slice 3"));
+        PieDataSet dataSet = new PieDataSet(entries, "Movie Pie Chart");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSet.setValueTextSize(12f);
+        dataSet.setValueTextColor(Color.WHITE);
+
+        pieChart.setUsePercentValues(true);
+        pieChart.setHoleRadius(60f);
+        pieChart.setTransparentCircleRadius(65f);
+        pieChart.setEntryLabelColor(Color.WHITE);
+        pieChart.setEntryLabelTextSize(12f);
+        pieChart.setRotationEnabled(true);
+        pieChart.setHighlightPerTapEnabled(true);
+        PieData data = new PieData(dataSet);
+        pieChart.setData(data);
+        pieChart.invalidate();
     }
 }

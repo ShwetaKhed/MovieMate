@@ -33,25 +33,41 @@ public class SignUpActivity extends AppCompatActivity {
     public void firebaseAuthentication() {
         auth = FirebaseAuth.getInstance();
         Button registerButton = findViewById(R.id.addButton);
-       // EditText emailEditText = findViewById(R.id.emailEditText);
-       // EditText passwordEditText = findViewById(R.id.passwordEditText);
+
         EditText emailEditText = findViewById(R.id.email_create);
         EditText passwordEditText = findViewById(R.id.password_create);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(SignUpActivity.this,
-//                        LaunchActivity.class));
-                // change the text in signup.xml
+
                 String email_txt = emailEditText.getText().toString();
                 String password_txt = passwordEditText.getText().toString();
-                if (TextUtils.isEmpty(email_txt) || TextUtils.isEmpty(password_txt)) {
-                    String msg = "Empty Username or Password";
-                } else if (password_txt.length() < 6) {
-                    String msg = "Password is too short";
-                } else
-                    registerUser(email_txt, password_txt);
+                if(TextUtils.isEmpty(email_txt)) {
+                    emailEditText.setError( "Email is required!" );
+                    toastMsg("Please enter Email");
+                    return;
+                }
+                /*if (email_txt.contains("@")) {
+                    toastMsg("Invalid Email");
+                    return;
+                }*/
+                if(TextUtils.isEmpty(password_txt)) {
+                    passwordEditText.setError( "Password is required!" );
+                    toastMsg("Please enter Password");
+                    return;
+                }
+                if(password_txt.length() <= 6) {
+                    passwordEditText.setError( "Invalid Password!" );
+                    toastMsg("Password too short.");
+                    return;
+                }
+                if(!password_txt.matches("(?=.*[a-z])(?=.*[A-Z]).+")) {
+                    passwordEditText.setError( "Invalid Password!" );
+                    toastMsg("Password too short.");
+                    return;
+                }
+                registerUser(email_txt, password_txt);
             }
         });
     }
@@ -65,8 +81,6 @@ public class SignUpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     String msg = "Registration Successful";
-//                    startActivity(new Intent(SignUpActivity.this,
-//                            LaunchActivity.class));
                     Intent intent = new Intent(SignUpActivity.this, LaunchActivity.class);
                     intent.putExtra("userEmail", email_txt);
 
