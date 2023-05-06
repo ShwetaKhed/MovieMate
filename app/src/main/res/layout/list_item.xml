@@ -66,8 +66,8 @@
 
             <ImageView
                 android:id="@+id/ivMovie"
-                android:layout_width="250dp"
-                android:layout_height="400dp"
+                android:layout_width="match_parent"
+                android:layout_height="429dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop" />
@@ -77,7 +77,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ivMovie"
-                android:layout_marginTop="0dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:fontWeight="500"
                 android:text="movieName"
                 android:textColor="@color/black"

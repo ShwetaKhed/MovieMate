@@ -24,14 +24,18 @@ public class MovieContentActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         Movie movie = (Movie) getIntent().getSerializableExtra("movie");
         TextView title = (TextView) findViewById(R.id.movieTitle);
+        TextView overview = (TextView) findViewById(R.id.movieOverview);
+        Log.d("TAG", movie.getPosterPath());
        /* TextView releaseDate = (TextView) findViewById(R.id.releaseDate);
         TextView adult = (TextView) findViewById(R.id.adult);
         TextView overview = (TextView) findViewById(R.id.movieOverview);*/
-        //ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        ImageView imageView = (ImageView) findViewById(R.id.ivMovie);
         title.setText(movie.getOriginalTitle());
+        overview.setText(movie.getOverview());
+        Glide.with(this).load(movie.getPosterPath()).into(imageView);
         /*releaseDate.setText("Release Date" + movie.getReleaseDate());
         adult.setText(movie.getAdult());
-        overview.setText(movie.getOverview());*/
+       */
         //Glide.with(imageView.getContext()).load(movieImage.get(position)).into(holder.imageView);
 
     }
