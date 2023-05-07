@@ -74,6 +74,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_booking_fragment,
+                R.id.nav_wishlist_fragment,
                 R.id.nav_info_fragment,
                 R.id.nav_map_fragment,
                 R.id.nav_bar_fragment,
