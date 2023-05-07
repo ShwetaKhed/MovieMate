@@ -1,7 +1,6 @@
 package com.example.moviemate.fragment;
 import com.example.moviemate.DatePicker;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -9,20 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.moviemate.R;
-import com.example.moviemate.User;
+import com.example.moviemate.model.User;
 import com.example.moviemate.databinding.InfoFragmentBinding;
-import com.example.moviemate.viewmodel.SharedViewModel;
 import com.example.moviemate.viewmodel.UserViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,10 +29,6 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import java.text.DateFormat;
-import java.util.Calendar;
-import android.app.DatePickerDialog.OnDateSetListener;
 
 public class InfoFragment extends Fragment {
     private DatabaseReference mDatabaseRef;

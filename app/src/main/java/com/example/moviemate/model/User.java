@@ -1,4 +1,4 @@
-package com.example.moviemate;
+package com.example.moviemate.model;
 
 import java.util.Date;
 

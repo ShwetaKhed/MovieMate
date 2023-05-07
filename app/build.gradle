@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.moviemate"
-        minSdk 21
+        minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -93,5 +93,11 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager:0.13.0"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    // ViewModel and LiveData
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.5.1'
+    // Room
+    implementation 'androidx.room:room-runtime:2.5.0'
+    annotationProcessor 'androidx.room:room-compiler:2.5.0'
 
 }
