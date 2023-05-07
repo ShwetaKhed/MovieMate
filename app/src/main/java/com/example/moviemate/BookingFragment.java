@@ -59,7 +59,7 @@ public class BookingFragment extends Fragment {
     {
 
         super.onViewCreated(view, savedInstanceState);
-        Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().getLatestMovies();
+        Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().getUpcoming();
         call.enqueue(new Callback<MovieResult>() {
             @Override
             public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {

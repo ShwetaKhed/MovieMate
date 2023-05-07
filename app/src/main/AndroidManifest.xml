@@ -34,12 +34,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MovieMate.NoActionBar"/>
         <activity
             android:name=".LaunchActivity"
             android:exported="true"
             android:theme="@style/Theme.MovieMate.NoActionBar" />
-        <activity android:name=".SignUpActivity" />
+        <activity android:name=".SignUpActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MovieMate.NoActionBar"/>/>
         <activity android:name=".MovieContentActivity" />
         <activity android:name=".BookingFragment" />
     </application>

@@ -14,8 +14,8 @@ public interface RetrofitInterface {
     String BASE_URL = "https://api.themoviedb.org/3/";
 
     String API_KEY = "6f6d1b438fddb937dd48a7f88b87eae7";
-    @GET("movie/now_playing?api_key=" + API_KEY)
-    Call<MovieResult> getLatestMovies();
+    @GET("movie/upcoming?api_key=" + API_KEY)
+    Call<MovieResult> getUpcoming();
 
     @GET("movie/top_rated?api_key=6f6d1b438fddb937dd48a7f88b87eae7&page=2")
     Call<MovieResult> getPopularMovies();

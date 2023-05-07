@@ -20,7 +20,11 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,6 +36,7 @@ public class PieChartFragment extends Fragment {
     private FragmentPieChartBinding binding;
     ArrayList<Movie> finalMovieList = new ArrayList<Movie>();
     Context context;
+    boolean showReport = false;
     public PieChartFragment(){}
 
     @Override
@@ -41,56 +46,94 @@ public class PieChartFragment extends Fragment {
         binding = FragmentPieChartBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
+        for (int i = 450; i < 500; i++) {
+
+            Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().
+                    getPopularMovies1("6f6d1b438fddb937dd48a7f88b87eae7", String.valueOf(i));
+
+            call.enqueue(new Callback<MovieResult>() {
+
+                @Override
+                public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
+                    MovieResult movieList = response.body();
+                    for (int j = 0; j < movieList.getResults().size(); j++) {
+                        Movie movie = new Movie();
+                        movie.setOriginalTitle(movieList.getResults().get(j).getOriginalTitle());
+                        movie.setReleaseDate(movieList.getResults().get(j).getReleaseDate());
+                        movie.setPopularity(movieList.getResults().get(j).getPopularity());
+                        movie.setPopularity(movieList.getResults().get(j).getOriginal_language());
+                        finalMovieList.add(movie);
+                        if (finalMovieList.size() == 1000)
+                        {
+                            try {
+                                createPieChart(view);
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+
+
+                }
+                @Override
+                public void onFailure(Call<MovieResult> call, Throwable t) {
+
+                }
+
+            });
+        }
+
 
         return view;
     }
 
     @Override
     public void onViewCreated(View view,
-                              Bundle savedInstanceState)
-    {
+                              Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().
-                getPopularMovies1("6f6d1b438fddb937dd48a7f88b87eae7", "2");
-        call.enqueue(new Callback<MovieResult>() {
-            @Override
-            public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
-                MovieResult movieList = response.body();
-                for (int i = 0; i < movieList.getResults().size(); i++)
-                {   Movie movie = new Movie();
-                    Log.d("title", movieList.getResults().get(i).getOriginalTitle());
-                    movie.setOriginalTitle(movieList.getResults().get(i).getOriginalTitle());
-                    movie.setReleaseDate(movieList.getResults().get(i).getReleaseDate());
-                    movie.setPopularity(movieList.getResults().get(i).getPopularity());
-                    movie.setPopularity(movieList.getResults().get(i).getOriginal_language());
-                    finalMovieList.add(movie);
-                }
-            }
-            @Override
-            public void onFailure(Call<MovieResult> call, Throwable t) {
+
+    }
+
+    public void createPieChart(View view) throws ParseException {
+        ArrayList<Movie> topMovies = new ArrayList<>();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        for (int i = 0; i < finalMovieList.size(); i++)
+        {
+            int count = 0;
+            Date startDate = dateFormat.parse("2013-05-16");
+            Date endDate = dateFormat.parse("2019-03-01");
+            Date releaseDate = dateFormat.parse(finalMovieList.get(i).getReleaseDate());
+
+            if (releaseDate.after(startDate) && releaseDate.before(endDate)) {
+                System.out.println("Date is between start and end dates.");
+
+                    topMovies.add(finalMovieList.get(i));
 
             }
-
-        });
+        }
+        Log.d("Count", String.valueOf(topMovies.size()));
         PieChart pieChart = view.findViewById(R.id.pieChart1);
         List<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(30f, "Slice 1"));
-        entries.add(new PieEntry(20f, "Slice 2"));
-        entries.add(new PieEntry(50f, "Slice 3"));
+        entries.add(new PieEntry(20f, topMovies.get(0).getOriginalTitle()));
+        entries.add(new PieEntry(20f, topMovies.get(1).getOriginalTitle()));
+        entries.add(new PieEntry(20f, topMovies.get(2).getOriginalTitle()));
+        entries.add(new PieEntry(20f, topMovies.get(3).getOriginalTitle()));
+        entries.add(new PieEntry(20f, topMovies.get(4).getOriginalTitle()));
         PieDataSet dataSet = new PieDataSet(entries, "Movie Pie Chart");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        dataSet.setValueTextSize(12f);
+        dataSet.setValueTextSize(15f);
         dataSet.setValueTextColor(Color.WHITE);
 
         pieChart.setUsePercentValues(true);
-        pieChart.setHoleRadius(60f);
-        pieChart.setTransparentCircleRadius(65f);
+        pieChart.setHoleRadius(30f);
+        //pieChart.setTransparentCircleRadius(65f);
         pieChart.setEntryLabelColor(Color.WHITE);
-        pieChart.setEntryLabelTextSize(12f);
+        pieChart.setEntryLabelTextSize(22f);
         pieChart.setRotationEnabled(true);
         pieChart.setHighlightPerTapEnabled(true);
         PieData data = new PieData(dataSet);
         pieChart.setData(data);
         pieChart.invalidate();
+
     }
 }

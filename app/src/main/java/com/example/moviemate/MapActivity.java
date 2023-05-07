@@ -15,7 +15,7 @@ import com.google.android.gms.maps.MapView;
 
 public class MapActivity extends Fragment {
     private MapView mapView;
-    //private MapboxMap mapboxMap;
+
 
     Context context;
     @Override

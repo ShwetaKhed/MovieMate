@@ -39,18 +39,13 @@ public class MovieContentActivity extends AppCompatActivity {
         Movie movie = (Movie) getIntent().getSerializableExtra("movie");
         TextView title = (TextView) findViewById(R.id.movieTitle);
         TextView overview = (TextView) findViewById(R.id.movieOverview);
+        TextView releaseDate = (TextView) findViewById(R.id.movieDate);
         Log.d("TAG", movie.getPosterPath());
-       /* TextView releaseDate = (TextView) findViewById(R.id.releaseDate);
-        TextView adult = (TextView) findViewById(R.id.adult);
-        TextView overview = (TextView) findViewById(R.id.movieOverview);*/
         ImageView imageView = (ImageView) findViewById(R.id.ivMovie);
         title.setText(movie.getOriginalTitle());
         overview.setText(movie.getOverview());
+        releaseDate.setText("Release Date" + movie.getReleaseDate());
         Glide.with(this).load(movie.getPosterPath()).into(imageView);
-        /*releaseDate.setText("Release Date" + movie.getReleaseDate());
-        adult.setText(movie.getAdult());
-       */
-        //Glide.with(imageView.getContext()).load(movieImage.get(position)).into(holder.imageView);
 
         // initializing viewModels
         userMoviesViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(UserMoviesViewModel.class);

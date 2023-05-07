@@ -1,7 +1,5 @@
 package com.example.moviemate;
 
-
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -44,9 +42,10 @@ import com.mapbox.maps.MapView;
 import com.mapbox.maps.Style;
 
 import android.widget.DatePicker;
+import android.widget.TextView;
+
 import java.text.DateFormat;
 import java.util.Calendar;
-
 
 public class LaunchActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private LaunchScreenBinding binding;
@@ -63,7 +62,6 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         super.onCreate(savedInstanceState);
 
         binding = LaunchScreenBinding.inflate(getLayoutInflater());
-
 
         View view = binding.getRoot();
         setContentView(view);
@@ -95,6 +93,10 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         String email = intent.getStringExtra("userEmail");
         model.setLoginEmail(email);
 
+       /* TextView first_name = findViewById(R.id.first_name);
+        // Change to name
+        first_name.setText("Welcome" + email);*/
+
         Button sign_out = findViewById(R.id.sign_out);
         sign_out.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,8 +107,6 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
             }
         });
         launchMaps(this);
-
-
     }
 
     @Override

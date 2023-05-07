@@ -5,22 +5,33 @@
 
     <item
         android:id="@+id/nav_booking_fragment"
+        android:icon="@drawable/home"
         android:title="Home" />
     <item
+        android:id="@+id/nav_wishlist_fragment"
+        android:icon="@drawable/star"
+        android:title="Wishlist" />
+    <item
         android:id="@+id/nav_info_fragment"
+        android:icon="@drawable/profile"
         android:title="Profile" />
     <item
         android:id="@+id/nav_map_fragment"
+        android:icon="@drawable/map"
         android:title="Map" />
 
 
-    <item android:title="Report">
+    <item android:title="Report"
+        android:icon="@drawable/report">
+
         <menu>
             <item
                 android:id="@+id/nav_bar_fragment"
+                android:icon="@drawable/bar"
                 android:title="Bar Chart" />
             <item
                 android:id="@+id/nav_pie_fragment"
+                android:icon="@drawable/pie"
                 android:title="Pie Chart" />
         </menu>
     </item>
