@@ -24,6 +24,7 @@ import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.moviemate.viewmodel.SharedViewModel;
+import com.example.moviemate.viewmodel.UserViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -31,14 +32,16 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
+    private UserViewModel userViewModel;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
         firebaseAuthentication();
       /*  startActivity(new Intent(LoginActivity.this,
                 LaunchActivity.class));*/
-
+        userViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(UserViewModel.class);
     }
+
     public void firebaseAuthentication()
     {
         auth = FirebaseAuth.getInstance();
@@ -104,6 +107,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(AuthResult authResult) {
                 String msg = "Login Successful";
                 toastMsg(msg);
+                // add current logged in user to liveData
+                userViewModel.setLoginEmail(txt_email);
                // startActivity(new Intent(LoginActivity.this, LaunchActivity.class));
                 Intent intent = new Intent(LoginActivity.this, LaunchActivity.class);
                 intent.putExtra("userEmail", txt_email);
