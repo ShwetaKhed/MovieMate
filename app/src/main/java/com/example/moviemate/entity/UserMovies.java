@@ -162,4 +162,9 @@ public class UserMovies {
             this.releaseDate = releaseDate;
         }
     }
+
+    public UserMovies()
+    {
+
+    }
 }
