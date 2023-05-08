@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.moviemate.databinding.ActivityMainBinding;
 import com.example.moviemate.databinding.LaunchScreenBinding;
 import com.example.moviemate.databinding.SignupBinding;
+import com.example.moviemate.model.User;
 import com.example.moviemate.viewmodel.SharedViewModel;
 import com.example.moviemate.viewmodel.UserViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,6 +32,7 @@ import java.util.Calendar;
 
 public class SignUpActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     private FirebaseAuth auth;
+    private DatabaseReference mDatabaseRef;
     private SignupBinding binding;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +128,8 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
                     startActivity(intent);*/
                     Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                     startActivity(intent);
+                    //Save on firebase
+                    saveUserDataOnRealtimeFirebase();
                 } else {
                     System.out.println(task.getException());
                     String msg = "Registration Unsuccessful";
@@ -138,6 +142,26 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    private void saveUserDataOnRealtimeFirebase()
+    {
+        String firstName=binding.firstName.getText().toString();
+        String lastName=binding.lastName.getText().toString();
+        String newDob=binding.editDob.getText().toString();
+        String email = binding.emailCreate.getText().toString();
+        String address = binding.add.getText().toString();
+
+        String username = email.split("@")[0];
+
+        User user = new User(email, firstName, lastName, newDob, "", "", address );
+
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users");
+        mDatabaseRef.child(username).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+               System.out.println("Successfully updated user data on firebase");
+            }
+        });
+    }
     @Override
     public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
         Calendar mCalendar = Calendar.getInstance();

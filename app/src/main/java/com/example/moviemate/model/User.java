@@ -10,16 +10,18 @@ public class User {
     String genrePreference;
     String theaterPreference;
 
+    String address;
     public User() {
     }
 
-    public User(String email, String firstName, String lastName, String dob, String genrePreference, String theaterPreference) {
+    public User(String email, String firstName, String lastName, String dob, String genrePreference, String theaterPreference, String address) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
         this.genrePreference = genrePreference;
         this.theaterPreference = theaterPreference;
+        this.address = address;
     }
 
     public String getEmail() {
@@ -68,5 +70,13 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        address = address;
     }
 }
