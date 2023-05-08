@@ -34,6 +34,7 @@ public class InfoFragment extends Fragment {
     private DatabaseReference mDatabaseRef;
     private InfoFragmentBinding binding;
 
+    String loginUserEmail;
     public InfoFragment(){}
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,20 +53,24 @@ public class InfoFragment extends Fragment {
             public void onChanged(@Nullable String s) {
                System.out.println("email" + s);
                readDataFromFirebase(s);
+                loginUserEmail = s;
             }
         });
+
 
         model.getDateOfBirth().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 System.out.println("date of birth" + s);
                 binding.editDob.setText(s);
+
             }
         });
 
         //Add genre spinner
         createGenreSpinner();
         createTheaterSpinner();
+
         binding.editDob.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -86,6 +91,7 @@ public class InfoFragment extends Fragment {
                 String newDob=binding.editDob.getText().toString();
                 String genrePreference = binding.spinnerGenre.getSelectedItem().toString();
                 String theaterPreference = binding.spinnerTheater.getSelectedItem().toString();
+                String address = binding.editAddress.getText().toString();
 
                 String email = model.getLoginEmail().getValue();
                 if(email == null || email.isEmpty())
@@ -121,8 +127,13 @@ public class InfoFragment extends Fragment {
                     Toast.makeText(getContext() , "Please enter your genre Preference", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                else if(address == null ||address.isEmpty() )
+                {
+                    Toast.makeText(getContext() , "Please enter your address", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                User user = new User(email, firstName, lastName, newDob, genrePreference, theaterPreference );
+                User user = new User(email, firstName, lastName, newDob, genrePreference, theaterPreference, address );
 
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users");
                 mDatabaseRef.child(username).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -132,6 +143,12 @@ public class InfoFragment extends Fragment {
                     }
                 });
             } });
+
+        binding.buttonCancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+               readDataFromFirebase(loginUserEmail);
+            }
+        });
 
         return view;
     }
@@ -163,10 +180,12 @@ public class InfoFragment extends Fragment {
                         String dob = String.valueOf(dataSnapshot.child("dob").getValue());
                         String genrePreference = String.valueOf(dataSnapshot.child("genrePreference").getValue());
                         String theaterPreference = String.valueOf(dataSnapshot.child("theaterPreference").getValue());
+                        String address = String.valueOf(dataSnapshot.child("address").getValue());
                         System.out.println("email : " + email + " and name" + firstname);
                         binding.editPersonName.setText(firstname);
                         binding.editLastName.setText(lastname);
                         binding.editDob.setText(dob);
+                        binding.editAddress.setText(address);
                         setSpinnerValue(binding.spinnerGenre, genrePreference);
                         setSpinnerValue(binding.spinnerTheater, theaterPreference);
                     }
