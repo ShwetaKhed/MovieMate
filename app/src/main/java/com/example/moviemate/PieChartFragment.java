@@ -50,7 +50,6 @@ public class PieChartFragment extends Fragment {
 
             Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().
                     getPopularMovies1("6f6d1b438fddb937dd48a7f88b87eae7", String.valueOf(i));
-
             call.enqueue(new Callback<MovieResult>() {
 
                 @Override
@@ -121,13 +120,13 @@ public class PieChartFragment extends Fragment {
         entries.add(new PieEntry(20f, topMovies.get(4).getOriginalTitle()));
         PieDataSet dataSet = new PieDataSet(entries, "Movie Pie Chart");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        dataSet.setValueTextSize(15f);
-        dataSet.setValueTextColor(Color.WHITE);
+        dataSet.setValueTextSize(22f);
+        dataSet.setValueTextColor(Color.BLACK);
 
         pieChart.setUsePercentValues(true);
         pieChart.setHoleRadius(30f);
         //pieChart.setTransparentCircleRadius(65f);
-        pieChart.setEntryLabelColor(Color.WHITE);
+        pieChart.setEntryLabelColor(Color.BLACK);
         pieChart.setEntryLabelTextSize(22f);
         pieChart.setRotationEnabled(true);
         pieChart.setHighlightPerTapEnabled(true);

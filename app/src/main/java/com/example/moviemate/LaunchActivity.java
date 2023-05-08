@@ -1,18 +1,19 @@
 package com.example.moviemate;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
+
+
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 
+
 import android.os.Bundle;
+
 
 import android.view.LayoutInflater;
 
 import android.view.View;
 import android.widget.Button;
-
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,21 +38,98 @@ import androidx.work.WorkManager;
 import com.example.moviemate.databinding.LaunchScreenBinding;
 
 import com.example.moviemate.entity.UserMovies;
+
 import com.example.moviemate.viewmodel.UserMoviesViewModel;
 import com.example.moviemate.viewmodel.UserViewModel;
 
 import com.example.moviemate.worker.PeriodicWorker;
 import com.google.android.material.navigation.NavigationView;
 
+
 import com.google.gson.Gson;
+
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+
+
+
+import android.widget.DatePicker;
+
+
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
+
+import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.Intent;
+
+
+import android.os.Bundle;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+
+import android.view.View;
+import android.widget.Button;
+
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
+
+
+import com.example.moviemate.databinding.LaunchScreenBinding;
+
+import com.example.moviemate.entity.UserMovies;
+import com.example.moviemate.model.Location;
+import com.example.moviemate.service.RetrofitClient;
+import com.example.moviemate.service.RetrofitClientMaps;
+import com.example.moviemate.viewmodel.UserMoviesViewModel;
+import com.example.moviemate.viewmodel.UserViewModel;
+
+import com.example.moviemate.worker.PeriodicWorker;
+import com.google.android.material.navigation.NavigationView;
+
+
+import com.google.gson.Gson;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.mapboxsdk.utils.BitmapUtils;
 
-
-
-import com.mapbox.maps.CameraOptions;
-import com.mapbox.maps.MapView;
-
-import com.mapbox.maps.Style;
 
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -61,31 +139,36 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LaunchActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private LaunchScreenBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
     NavigationView nav_view;
     private UserViewModel model;
     private UserMoviesViewModel userMoviesViewModel;
-    MapView mapView;
+
+    double lat = 0.0;
+    double longitutde = 0.0;
+
 
     String userEmail;
+
+    MapboxMap mapboxMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = LaunchScreenBinding.inflate(getLayoutInflater());
-
         View view = binding.getRoot();
         setContentView(view);
         nav_view = findViewById(R.id.nav_view);
-
         LayoutInflater inflater = LayoutInflater.from(this);
-        View view1 = inflater.inflate(R.layout.maps_fragment, null);
-        MapView mapView = view1.findViewById(R.id.mapView);
 
-
+        
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_booking_fragment,
                 R.id.nav_wishlist_fragment,
@@ -140,17 +223,8 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
 
     public void launchMaps(Context context) {
 
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.maps_fragment, null);
-        mapView = view.findViewById(R.id.mapView);
-        final Point point = Point.fromLngLat(145.045837, -37.876823 );
-        mapView = findViewById(R.id.mapView);
-        CameraOptions cameraPosition = new CameraOptions.Builder()
-                .zoom(13.0)
-                .center(point)
-                .build();
-    /*    mapView.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS);
-        mapView.getMapboxMap().setCamera(cameraPosition);*/
+        
+        
 
 
     }

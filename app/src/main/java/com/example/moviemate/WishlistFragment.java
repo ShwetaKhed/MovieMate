@@ -2,6 +2,7 @@ package com.example.moviemate;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviemate.databinding.LaunchScreenBinding;
 import com.example.moviemate.databinding.WishlistFragmentBinding;
 import com.example.moviemate.entity.UserMovies;
+import com.example.moviemate.model.Movie;
 import com.example.moviemate.viewmodel.UserMoviesViewModel;
 import com.example.moviemate.viewmodel.UserViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,17 +36,30 @@ public class WishlistFragment extends Fragment {
     private DatabaseReference mDatabaseRef;
     private WishlistFragmentBinding binding;
     Context context;
-    private List<UserMovies> userSelectedMovies = new ArrayList<UserMovies>();
+    private List<Movie> userSelectedMovies = new ArrayList<Movie>();
+
+    private List<String> movieNames = new ArrayList<>();
     private UserMoviesViewModel userMoviesViewModel;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         userMoviesViewModel = new ViewModelProvider(requireActivity()).get(UserMoviesViewModel.class);
-
         userMoviesViewModel.getAllUserMovies().observe(this, userMovies -> {
-            this.userSelectedMovies = userMovies;
-        });
+            for (UserMovies movie1: userMovies
+            ) {
+                if (!this.movieNames.contains(movie1.originalTitle)) {
+                    Log.d(movie1.originalTitle, movie1.overview);
+                    Log.d("User email", movie1.getUserEmail());
+                    Movie movie = new Movie();
+                    movie.setOriginal_language(movie1.originalTitle);
+                    movie.setPosterPath(movie1.posterPath);
+                    this.movieNames.add(movie1.originalTitle);
+                    this.userSelectedMovies.add(movie);
+                }
+            }
+        } );
+
     }
 
     @Override
@@ -54,12 +71,14 @@ public class WishlistFragment extends Fragment {
         this.context = container.getContext();
         // Inflate the layout for this fragment
 
+
+
         UserViewModel userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         userViewModel.getLoginEmail().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 System.out.println("email" + s);
-                readMoviesDataFromFirebase(s);
+                readMoviesDataFromFirebase(view, s);
             }
         });
         return view;
@@ -70,14 +89,12 @@ public class WishlistFragment extends Fragment {
     public void onViewCreated(View view,
                               Bundle savedInstanceState)
     {
+        Log.d("Tag", String.valueOf(this.userSelectedMovies.size()));
 
     }
 
-    private void getMoviesWishlist()
-    {
-        //List<UserMovies> movies = new List<UserMovies>();
-    }
-    private  void readMoviesDataFromFirebase(String email)
+
+    private  void readMoviesDataFromFirebase(View view, String email)
     {
         System.out.println("User login email id is : " + email);
         if(email == null)
@@ -107,6 +124,15 @@ public class WishlistFragment extends Fragment {
                             System.out.println("Title of Movie : " + movies.originalTitle);
                         }
                         //TODO: Do Your stuff here
+                        WishlistAdapter itemAdapter = new WishlistAdapter(getContext(),movieList);
+                        RecyclerView recyclerView
+                                = view.findViewById(R.id.recycleView);
+                        recyclerView.setLayoutManager(
+                                new LinearLayoutManager(getContext()));
+
+                        // adapter instance is set to the
+                        // recyclerview to inflate the items.
+                        recyclerView.setAdapter(itemAdapter);
                     }
                     else {
                         //data for this user didn't exist

@@ -50,7 +50,16 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
                 return false;
             }
         });
+        Button loginBackButton = findViewById(R.id.loginBackButton);
         firebaseAuthentication();
+
+        loginBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void pickDateOfBirth()

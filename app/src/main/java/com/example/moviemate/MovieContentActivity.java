@@ -1,5 +1,7 @@
 package com.example.moviemate;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,6 +66,13 @@ public class MovieContentActivity extends AppCompatActivity {
                 UserMovies userMovie = new UserMovies(userEmail, movie.getOriginalTitle(), movie.getPosterPath(),
                         movie.getOverview(), movie.getId(), movie.getReleaseDate());
                 userMoviesViewModel.insert(userMovie);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MovieContentActivity.this);
+                builder.setTitle("Movie added to wishlist");
+                builder.setPositiveButton("OK", (DialogInterface.OnClickListener) (dialog, which) -> {
+                    finish();
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
 
@@ -73,6 +83,8 @@ public class MovieContentActivity extends AppCompatActivity {
                     Log.d("User email", movie1.getUserEmail());
             }
         } );
+
+
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
