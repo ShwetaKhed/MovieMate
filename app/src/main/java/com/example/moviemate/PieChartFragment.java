@@ -5,15 +5,21 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.moviemate.databinding.FragmentPieChartBinding;
 import com.example.moviemate.model.Movie;
 import com.example.moviemate.model.MovieResult;
 import com.example.moviemate.service.RetrofitClient;
+import com.example.moviemate.viewmodel.SharedViewModel;
+import com.example.moviemate.viewmodel.UserViewModel;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -37,6 +43,9 @@ public class PieChartFragment extends Fragment {
     ArrayList<Movie> finalMovieList = new ArrayList<Movie>();
     Context context;
     boolean showReport = false;
+
+    private boolean isStartDateChanged;
+    private boolean isEndDateChanged;
     public PieChartFragment(){}
 
     @Override
@@ -46,6 +55,7 @@ public class PieChartFragment extends Fragment {
         binding = FragmentPieChartBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
+        System.out.println("Pie chart acticity " + this.getActivity());
         for (int i = 450; i < 500; i++) {
 
             Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().
@@ -81,6 +91,58 @@ public class PieChartFragment extends Fragment {
 
             });
         }
+
+        binding.startDate.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    System.out.println("Clicked on start date");
+                    DatePicker mDatePickerDialogFragment = new DatePicker();
+                    mDatePickerDialogFragment.show(getChildFragmentManager(), DatePicker.TAG);
+                    isStartDateChanged = true;
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        binding.endDate.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    System.out.println("Clicked on end date");
+                    DatePicker mDatePickerDialogFragment = new DatePicker();
+                    mDatePickerDialogFragment.show(getChildFragmentManager(), DatePicker.TAG);
+                    isEndDateChanged = true;
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        SharedViewModel sharedViewmodel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        sharedViewmodel.getStartDate().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                System.out.println("Start date" + s);
+                if(isStartDateChanged)
+                {
+                    isStartDateChanged = false;
+                    binding.startDate.setText(s);
+                }
+            }
+        });
+        sharedViewmodel.getStartDate().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                System.out.println("End date set on " + s);
+                if(isEndDateChanged)
+                {
+                    isEndDateChanged = false;
+                    binding.endDate.setText(s);
+                }
+            }
+        });
 
 
         return view;

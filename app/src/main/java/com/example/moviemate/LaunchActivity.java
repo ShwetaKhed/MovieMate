@@ -1,6 +1,7 @@
 package com.example.moviemate;
 
 
+import androidx.fragment.app.Fragment;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -39,6 +40,7 @@ import com.example.moviemate.databinding.LaunchScreenBinding;
 
 import com.example.moviemate.entity.UserMovies;
 
+import com.example.moviemate.viewmodel.SharedViewModel;
 import com.example.moviemate.viewmodel.UserMoviesViewModel;
 import com.example.moviemate.viewmodel.UserViewModel;
 
@@ -149,6 +151,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
     NavigationView nav_view;
     private UserViewModel model;
     private UserMoviesViewModel userMoviesViewModel;
+    private SharedViewModel sharedViewModel;
 
     double lat = 0.0;
     double longitutde = 0.0;
@@ -191,6 +194,8 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         String email = intent.getStringExtra("userEmail");
         model.setLoginEmail(email);
 
+        sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+
        /* TextView first_name = findViewById(R.id.first_name);
         // Change to name
         first_name.setText("Welcome" + email);*/
@@ -219,13 +224,12 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         //tvDate.setText(selectedDate);
         System.out.println("selected date " + selectedDate);
         model.setDateOfBirth(selectedDate);
+        sharedViewModel.setStartDate(selectedDate);
+        sharedViewModel.setEndDate(selectedDate);
+
     }
 
     public void launchMaps(Context context) {
-
-        
-        
-
 
     }
 
@@ -332,5 +336,17 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                     }
                 });
         WorkManager.getInstance().enqueue(periodicWorkRequest);
+    }
+
+    public Fragment getVisibleFragment(){
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if(fragments != null){
+            for(Fragment fragment : fragments){
+                if(fragment != null && fragment.isVisible())
+                    return fragment;
+            }
+        }
+        return null;
     }
 }
