@@ -74,7 +74,7 @@ public class MapActivity extends Fragment {
     public void onViewCreated(View view,
                               Bundle savedInstanceState)
     {
-        String addressToGeocode = "951-955, Dandenong road, Malvern East, Vic-3145";
+        String addressToGeocode = "951-955,Dandenong road,Malvern East,Vic-3145";
 
         Call<Location> call = RetrofitClientMaps.getInstance().getMyApi().getLatLong();
 

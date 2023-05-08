@@ -77,22 +77,56 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
 
         EditText emailEditText = findViewById(R.id.email_create);
         EditText passwordEditText = findViewById(R.id.password_create);
+        EditText first_name = findViewById(R.id.first_name);
+        EditText last_name = findViewById(R.id.last_name);
+        EditText edit_dob = findViewById(R.id.edit_dob);
+        EditText add = findViewById(R.id.add);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String email_txt = emailEditText.getText().toString();
                 String password_txt = passwordEditText.getText().toString();
+                String firstNameTxt = first_name.getText().toString();
+                String lastNameTxt = last_name.getText().toString();
+                String dob = edit_dob.getText().toString();
+                String addTxt = add.getText().toString();
+
+                if(TextUtils.isEmpty(firstNameTxt)) {
+                    first_name.setError( "First Name is required!" );
+                    toastMsg("Please enter First Name");
+                    return;
+                }
+
+                if(TextUtils.isEmpty(lastNameTxt)) {
+                    last_name.setError( "Last Name is required!" );
+                    toastMsg("Please enter Last Name");
+                    return;
+                }
+
+                if(TextUtils.isEmpty(lastNameTxt)) {
+                    last_name.setError( "Last Name is required!" );
+                    toastMsg("Please enter Last Name");
+                    return;
+                }
+
+                if(TextUtils.isEmpty(dob)) {
+                    edit_dob.setError( "Date of birth is required!" );
+                    toastMsg("Please enter Date of birth");
+                    return;
+                }
+                if(TextUtils.isEmpty(addTxt)) {
+                    add.setError( "Address is required!" );
+                    toastMsg("Please enter Address");
+                    return;
+                }
+
                 if(TextUtils.isEmpty(email_txt)) {
                     emailEditText.setError( "Email is required!" );
                     toastMsg("Please enter Email");
                     return;
                 }
-                /*if (email_txt.contains("@")) {
-                    toastMsg("Invalid Email");
-                    return;
-                }*/
+
                 if(TextUtils.isEmpty(password_txt)) {
                     passwordEditText.setError( "Password is required!" );
                     toastMsg("Please enter Password");
@@ -108,6 +142,7 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
                     toastMsg("Password too short.");
                     return;
                 }
+
                 registerUser(email_txt, password_txt);
             }
         });

@@ -46,6 +46,10 @@
             android:theme="@style/Theme.MovieMate.NoActionBar"/>/>
         <activity android:name=".MovieContentActivity" />
         <activity android:name=".BookingFragment" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
