@@ -170,8 +170,6 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         setContentView(view);
         nav_view = findViewById(R.id.nav_view);
         LayoutInflater inflater = LayoutInflater.from(this);
-
-        
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_booking_fragment,
                 R.id.nav_wishlist_fragment,
