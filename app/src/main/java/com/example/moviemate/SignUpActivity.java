@@ -204,9 +204,7 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
         mCalendar.set(Calendar.MONTH, month);
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(mCalendar.getTime());
-        //tvDate.setText(selectedDate);
         System.out.println("selected date " + selectedDate);
-        //model.setDateOfBirth(selectedDate);
         binding.editDob.setText(selectedDate);
     }
 }
