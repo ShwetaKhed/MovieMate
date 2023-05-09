@@ -40,10 +40,13 @@ public class MovieContentActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         Movie movie = (Movie) getIntent().getSerializableExtra("movie");
+        String email = getIntent().getStringExtra("userEmail");
+        Log.d("emailemailemail", email);
+
         TextView title = (TextView) findViewById(R.id.movieTitle);
         TextView overview = (TextView) findViewById(R.id.movieOverview);
         TextView releaseDate = (TextView) findViewById(R.id.movieDate);
-        Log.d("TAG", movie.getPosterPath());
+
         ImageView imageView = (ImageView) findViewById(R.id.ivMovie);
         title.setText(movie.getOriginalTitle());
         overview.setText(movie.getOverview());

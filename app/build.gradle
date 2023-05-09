@@ -85,7 +85,9 @@ dependencies {
     androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
 
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+   // implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.github.blackfizz:eazegraph:1.2.5l@aar'
+    implementation 'com.nineoldandroids:library:2.4.0'
     // ViewModel and LiveData
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-livedata:2.5.1'

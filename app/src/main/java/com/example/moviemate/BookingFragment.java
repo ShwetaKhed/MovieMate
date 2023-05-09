@@ -9,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +20,7 @@ import com.example.moviemate.databinding.LaunchScreenBinding;
 import com.example.moviemate.model.Movie;
 import com.example.moviemate.model.MovieResult;
 import com.example.moviemate.service.RetrofitClient;
+import com.example.moviemate.viewmodel.UserViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +34,8 @@ public class BookingFragment extends Fragment {
 
     ArrayList<Movie> finalMovieList = new ArrayList<Movie>();
     Context context;
+
+    String userEmail;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -75,7 +81,16 @@ public class BookingFragment extends Fragment {
                     movie.setOverview(movieList.getResults().get(i).getOverview());
                     finalMovieList.add(movie);
                 }
-                Adapter itemAdapter = new Adapter(getContext(),finalMovieList);
+                UserViewModel model = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+                model.getLoginEmail().observe(getViewLifecycleOwner(), new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+                        System.out.println("email" + s);
+                        BookingFragment.this.userEmail = s;
+
+                    }
+                });
+                Adapter itemAdapter = new Adapter(getContext(),finalMovieList, userEmail);
                 RecyclerView recyclerView
                         = view.findViewById(R.id.recycleView);
                 recyclerView.setLayoutManager(
