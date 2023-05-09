@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.moviemate.R;
@@ -34,6 +35,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,6 +48,12 @@ public class BarChartFragment extends Fragment {
     private FragmentBarReportBinding binding;
     ArrayList<Movie> finalMovieList = new ArrayList<Movie>();
     Context context;
+
+    boolean showReport = false;
+
+    private boolean isStartDateChanged;
+    private boolean isEndDateChanged;
+
     public BarChartFragment(){}
 
     @Override
@@ -55,8 +63,99 @@ public class BarChartFragment extends Fragment {
         binding = FragmentBarReportBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
+        System.out.println("Bar chart acticity " + this.getActivity());
+        for (int i = 450; i < 500; i++) {
+
+            Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().
+                    getPopularMovies1("6f6d1b438fddb937dd48a7f88b87eae7", String.valueOf(i));
+            call.enqueue(new Callback<MovieResult>() {
+
+                @Override
+                public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
+                    MovieResult movieList = response.body();
+                    for (int j = 0; j < movieList.getResults().size(); j++) {
+                        Movie movie = new Movie();
+                        movie.setOriginalTitle(movieList.getResults().get(j).getOriginalTitle());
+                        movie.setReleaseDate(movieList.getResults().get(j).getReleaseDate());
+                        movie.setPopularity(movieList.getResults().get(j).getPopularity());
+                        movie.setPopularity(movieList.getResults().get(j).getOriginal_language());
+                        finalMovieList.add(movie);
+                        if (finalMovieList.size() == 1000)
+                        {
+                            try {
+                                createBarChart(view);
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+
+
+                }
+                @Override
+                public void onFailure(Call<MovieResult> call, Throwable t) {
+
+                }
+
+            });
+        }
+        binding.startDate.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    System.out.println("Clicked on start date");
+                    DatePicker mDatePickerDialogFragment = new DatePicker();
+                    mDatePickerDialogFragment.show(getChildFragmentManager(), DatePicker.TAG);
+                    isStartDateChanged = true;
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        binding.endDate.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    System.out.println("Clicked on end date");
+                    DatePicker mDatePickerDialogFragment = new DatePicker();
+                    mDatePickerDialogFragment.show(getChildFragmentManager(), DatePicker.TAG);
+                    isEndDateChanged = true;
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        SharedViewModel sharedViewmodel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        sharedViewmodel.getStartDate().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                System.out.println("Start date" + s);
+                if(isStartDateChanged)
+                {
+                    isStartDateChanged = false;
+                    binding.startDate.setText(s);
+                }
+            }
+        });
+
+        sharedViewmodel.getStartDate().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                System.out.println("End date set on " + s);
+                if(isEndDateChanged)
+                {
+                    isEndDateChanged = false;
+                    binding.endDate.setText(s);
+                }
+            }
+        });
+
 
         return view;
+
+
     }
 
     @Override
@@ -129,4 +228,10 @@ public class BarChartFragment extends Fragment {
 
         });
     }
+
+    public void createBarChart(View view) throws ParseException {
+
+
+    }
+
 }
