@@ -38,12 +38,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     ArrayList<Movie> movieList = new ArrayList<>();
     public static Context context;
+    public String userEmail;
 
 
 
-    public Adapter(Context context, ArrayList<Movie> movielist) {
+    public Adapter(Context context, ArrayList<Movie> movielist, String userEmail) {
         this.context = context;
         this.movieList = movielist;
+        this.userEmail = userEmail;
         for (int i = 0; i < movielist.size(); i ++) {
             this.movieTitle.add(movielist.get(i).getOriginalTitle());
             this.movieImage.add(movielist.get(i).getPosterPath());
@@ -101,6 +103,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         Movie selectedMovie =  movieList.get(position);
                         Intent i = new Intent(context, MovieContentActivity.class);
                         i.putExtra("movie", selectedMovie);
+                        i.putExtra("userEmail", userEmail);
                         context.startActivity(i);
                     }
                 }

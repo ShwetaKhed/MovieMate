@@ -1,15 +1,21 @@
 package com.example.moviemate;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,19 +25,21 @@ import com.example.moviemate.model.Movie;
 import com.example.moviemate.model.MovieResult;
 import com.example.moviemate.service.RetrofitClient;
 import com.example.moviemate.viewmodel.SharedViewModel;
-import com.example.moviemate.viewmodel.UserViewModel;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.renderer.LegendRenderer;
 
+
+import org.eazegraph.lib.charts.PieChart;
+import org.eazegraph.lib.models.PieModel;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,16 +54,26 @@ public class PieChartFragment extends Fragment {
 
     private boolean isStartDateChanged;
     private boolean isEndDateChanged;
+
+    PieChart pieChart;
+
+    EditText startDate ;
+    EditText endDate;
+
+
+
     public PieChartFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        this.context = container.getContext();
 
         binding = FragmentPieChartBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-
-        System.out.println("Pie chart acticity " + this.getActivity());
+        pieChart = view.findViewById(R.id.piechart);
+        startDate = view.findViewById(R.id.startDate);
+        endDate = view.findViewById(R.id.endDate);
         for (int i = 450; i < 500; i++) {
 
             Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().
@@ -70,16 +88,8 @@ public class PieChartFragment extends Fragment {
                         movie.setOriginalTitle(movieList.getResults().get(j).getOriginalTitle());
                         movie.setReleaseDate(movieList.getResults().get(j).getReleaseDate());
                         movie.setPopularity(movieList.getResults().get(j).getPopularity());
-                        movie.setPopularity(movieList.getResults().get(j).getOriginal_language());
                         finalMovieList.add(movie);
-                        if (finalMovieList.size() == 1000)
-                        {
-                            try {
-                                createPieChart(view);
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
+
                     }
 
 
@@ -128,7 +138,21 @@ public class PieChartFragment extends Fragment {
                 if(isStartDateChanged)
                 {
                     isStartDateChanged = false;
-                    binding.startDate.setText(s);
+
+                    SimpleDateFormat originalDateFormat = new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.US);
+                    Date originalDate = null;
+                    try {
+                        originalDate = originalDateFormat.parse(s);
+                        SimpleDateFormat desiredDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                        String desiredDateString = desiredDateFormat.format(originalDate);
+
+                        System.out.println(desiredDateString);
+                        binding.startDate.setText(desiredDateString);
+                        startDate.setError(null);
+
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
@@ -139,13 +163,41 @@ public class PieChartFragment extends Fragment {
                 if(isEndDateChanged)
                 {
                     isEndDateChanged = false;
-                    binding.endDate.setText(s);
+                    SimpleDateFormat originalDateFormat = new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.US);
+                    Date originalDate = null;
+                    try {
+                        originalDate = originalDateFormat.parse(s);
+                        SimpleDateFormat desiredDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                        String desiredDateString = desiredDateFormat.format(originalDate);
+
+                        System.out.println(desiredDateString);
+                        binding.endDate.setText(desiredDateString);
+                        endDate.setError(null);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+        Button button = (Button) view.findViewById(R.id.viewChartButton);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try {
+                    createPieChart(pieChart);
+
+
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
 
 
-        return view;
+    return view;
     }
 
     @Override
@@ -155,46 +207,78 @@ public class PieChartFragment extends Fragment {
 
     }
 
-    public void createPieChart(View view) throws ParseException {
+    public void createPieChart(PieChart pieChart) throws ParseException {
+        String startDt = String.valueOf(binding.startDate.getText());
+        String endDt = String.valueOf(binding.endDate.getText());
+        if (startDt.isEmpty())
+        {
+            startDate.setError("Required");
+            return;
+        }
+        if (endDt.isEmpty())
+        {
+            endDate.setError("Required");
+            return;
+        }
         ArrayList<Movie> topMovies = new ArrayList<>();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (int i = 0; i < finalMovieList.size(); i++)
         {
             int count = 0;
-            Date startDate = dateFormat.parse("2013-05-16");
-            Date endDate = dateFormat.parse("2019-03-01");
+            Date startDate = dateFormat.parse(startDt);
+            Date endDate = dateFormat.parse(endDt);
             Date releaseDate = dateFormat.parse(finalMovieList.get(i).getReleaseDate());
-
             if (releaseDate.after(startDate) && releaseDate.before(endDate)) {
-                System.out.println("Date is between start and end dates.");
-
                     topMovies.add(finalMovieList.get(i));
-
             }
         }
-        Log.d("Count", String.valueOf(topMovies.size()));
-        PieChart pieChart = view.findViewById(R.id.pieChart1);
-        List<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(20f, topMovies.get(0).getOriginalTitle()));
-        entries.add(new PieEntry(20f, topMovies.get(1).getOriginalTitle()));
-        entries.add(new PieEntry(20f, topMovies.get(2).getOriginalTitle()));
-        entries.add(new PieEntry(20f, topMovies.get(3).getOriginalTitle()));
-        entries.add(new PieEntry(20f, topMovies.get(4).getOriginalTitle()));
-        PieDataSet dataSet = new PieDataSet(entries, "Movie Pie Chart");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        dataSet.setValueTextSize(22f);
-        dataSet.setValueTextColor(Color.BLACK);
+        if (topMovies.isEmpty()) {
+            binding.invalidText.setText("Select different dates and retry");
+           return;
+        }
 
-        pieChart.setUsePercentValues(true);
-        pieChart.setHoleRadius(30f);
-        //pieChart.setTransparentCircleRadius(65f);
-        pieChart.setEntryLabelColor(Color.BLACK);
-        pieChart.setEntryLabelTextSize(22f);
-        pieChart.setRotationEnabled(true);
-        pieChart.setHighlightPerTapEnabled(true);
-        PieData data = new PieData(dataSet);
-        pieChart.setData(data);
-        pieChart.invalidate();
+        BigDecimal totalPopularity = new BigDecimal(0.00);
+        for (int index = 0; index < 5; index ++)
+        {
+          totalPopularity = totalPopularity.add(new BigDecimal(topMovies.get(index).getPopularity()));
+        }
+        Log.d("totalPopularity", String.valueOf(totalPopularity));
+
+
+        pieChart.clearChart();
+        pieChart.addPieSlice(
+                new PieModel(
+                        topMovies.get(0).getOriginalTitle(),
+                        new BigDecimal(topMovies.get(0).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),
+                        Color.parseColor("#FFA726")));
+
+        pieChart.addPieSlice(
+                new PieModel(
+                        topMovies.get(1).getOriginalTitle(),
+                        new BigDecimal(topMovies.get(1).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),
+                        Color.parseColor("#66BB6A")));
+        //label2.setText(topMovies.get(1).getOriginalTitle());
+        pieChart.addPieSlice(
+                new PieModel(
+                        topMovies.get(2).getOriginalTitle(),
+                        new BigDecimal(topMovies.get(2).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),
+                        Color.parseColor("#EF5350")));
+        //label3.setText(topMovies.get(2).getOriginalTitle());
+        pieChart.addPieSlice(
+                new PieModel(
+                        topMovies.get(3).getOriginalTitle(),
+                        new BigDecimal(topMovies.get(3).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),
+                        Color.parseColor("#29B6F6")));
+        //label4.setText(topMovies.get(3).getOriginalTitle());
+        pieChart.addPieSlice(
+                new PieModel(
+                        topMovies.get(4).getOriginalTitle(),
+                        new BigDecimal(topMovies.get(4).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),
+                        Color.parseColor("#d885ed")));
+        //label5.setText(topMovies.get(4).getOriginalTitle());
+        pieChart.startAnimation();
+
+
 
     }
 }

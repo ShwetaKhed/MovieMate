@@ -77,7 +77,7 @@ public class Movie implements Serializable {
     }
 
     public void setPopularity(String popularity) {
-        this.original_language = original_language;
+        this.popularity = popularity;
     }
 
     public String getOriginal_language() {
