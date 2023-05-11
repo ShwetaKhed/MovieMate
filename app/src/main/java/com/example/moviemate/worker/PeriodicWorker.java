@@ -24,6 +24,7 @@ public class PeriodicWorker extends Worker {
     public static final String MOVIE_WISHLIST_KEY = "MOVIE_WISHLIST";
     public static final String USER_EMAIL_KEY = "USER_EMAIL";
 
+    public static final String PERIODIC_WORKER_TAG = "PERIODIC_WORKER_TAG";
     public PeriodicWorker(
             @NonNull Context context,
             @NonNull WorkerParameters params) {
@@ -33,6 +34,9 @@ public class PeriodicWorker extends Worker {
     @Override
     public Result doWork() {
         try {
+//            // Get the UUID value from the input data
+//            String uuid = getInputData().getString(PERIODIC_WORKER_UUID);
+//            System.out.println("static UUID" + uuid);
             //get input data here
             Data data =  getInputData();
             String userMovieInfo = data.getString(MOVIE_WISHLIST_KEY);
@@ -41,7 +45,6 @@ public class PeriodicWorker extends Worker {
             Type type = new TypeToken<List<UserMovies>>(){}.getType();
             List<UserMovies> userMovies =  gson.fromJson(userMovieInfo, type);
             String email =  data.getString(USER_EMAIL_KEY);
-            System.out.println("Save data on server for user " + email);
             //Send the movies list
             saveMoviesWishlistOnFirebase(email, userMovies);
             // Indicate whether the work finished successfully with the Result
@@ -63,7 +66,6 @@ public class PeriodicWorker extends Worker {
         mDatabaseRef.child(username).setValue(userMovies).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                System.out.println("Movies Data Saves successfully on firebase");
                 Data data1 = new Data.Builder()
                     .putString("OUTPUT", "Task Finish Successfully")
                     .build();
