@@ -2,6 +2,7 @@ package com.example.moviemate;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -268,14 +269,37 @@ public class BarChartFragment extends Fragment {
         }
         Log.d("totalPopularity", String.valueOf(totalPopularity));
 
+        BarModel bm1 = new BarModel(topMovies.get(0).getOriginalTitle(),new BigDecimal(topMovies.get(0).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), Color.parseColor("#FFA726"));
+        BarModel bm2 = new BarModel(topMovies.get(1).getOriginalTitle(),new BigDecimal(topMovies.get(1).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), Color.parseColor("#66BB6A"));
+        BarModel bm3 = new BarModel(topMovies.get(2).getOriginalTitle(),new BigDecimal(topMovies.get(2).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), Color.parseColor("#EF5350"));
+        BarModel bm4 = new BarModel(topMovies.get(3).getOriginalTitle(),new BigDecimal(topMovies.get(3).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), Color.parseColor("#29B6F6"));
+        BarModel bm5 = new BarModel(topMovies.get(4).getOriginalTitle(),new BigDecimal(topMovies.get(4).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), Color.parseColor("#d885ed"));
+
+        barChart.addBar(bm1);
+        barChart.addBar(bm2);
+        barChart.addBar(bm3);
+        barChart.addBar(bm4);
+        barChart.addBar(bm5);
+
+        bm1.setShowLabel(true);
+        bm2.setShowLabel(true);
+        bm3.setShowLabel(true);
+        bm4.setShowLabel(true);
+        bm5.setShowLabel(true);
+        bm1.setLegendLabel(topMovies.get(0).getOriginalTitle());
+        bm2.setLegendLabel(topMovies.get(1).getOriginalTitle());
+        bm3.setLegendLabel(topMovies.get(2).getOriginalTitle());
+        bm4.setLegendLabel(topMovies.get(3).getOriginalTitle());
+        bm5.setLegendLabel(topMovies.get(4).getOriginalTitle());
+        Rect bounds = bm1.getTextBounds();
 
 
-        barChart.addBar(new BarModel(topMovies.get(0).getOriginalTitle(),new BigDecimal(topMovies.get(0).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF123456));
+        /*barChart.addBar(new BarModel(topMovies.get(0).getOriginalTitle(),new BigDecimal(topMovies.get(0).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF123456));
         barChart.addBar(new BarModel(topMovies.get(1).getOriginalTitle(),new BigDecimal(topMovies.get(1).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),  0xFF343456));
         barChart.addBar(new BarModel(topMovies.get(2).getOriginalTitle(),new BigDecimal(topMovies.get(2).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF563456));
         barChart.addBar(new BarModel(topMovies.get(3).getOriginalTitle(),new BigDecimal(topMovies.get(3).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF873F56));
         barChart.addBar(new BarModel(topMovies.get(4).getOriginalTitle(),new BigDecimal(topMovies.get(4).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF56B7F1));
-
+*/
 
         barChart.startAnimation();
 
