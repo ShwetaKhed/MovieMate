@@ -29,8 +29,7 @@ import com.google.gson.Gson;
 public class MovieContentActivity extends AppCompatActivity {
     private MovieContentBinding binding;
     private UserMoviesViewModel userMoviesViewModel;
-    private UserViewModel userViewModel;
-    private String userEmail;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = MovieContentBinding.inflate(getLayoutInflater());
@@ -55,18 +54,13 @@ public class MovieContentActivity extends AppCompatActivity {
 
         // initializing viewModels
         userMoviesViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(UserMoviesViewModel.class);
-        userViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(UserViewModel.class);
 
-        userViewModel.getLoginEmail().observe(this, loginEmail -> {
-            userEmail = loginEmail;
-            Log.d("Current logged in user", userEmail);
-        });
         // adding movie to room database on wishlist button
         binding.wishlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                UserMovies userMovie = new UserMovies(userEmail, movie.getOriginalTitle(), movie.getPosterPath(),
+                UserMovies userMovie = new UserMovies(email, movie.getOriginalTitle(), movie.getPosterPath(),
                         movie.getOverview(), movie.getId(), movie.getReleaseDate());
                 userMoviesViewModel.insert(userMovie);
                 AlertDialog.Builder builder = new AlertDialog.Builder(MovieContentActivity.this);
