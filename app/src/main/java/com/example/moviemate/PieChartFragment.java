@@ -57,7 +57,6 @@ public class PieChartFragment extends Fragment {
     private boolean isEndDateChanged;
 
     PieChart pieChart;
-
     EditText startDate ;
     EditText endDate;
 
