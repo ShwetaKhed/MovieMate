@@ -28,17 +28,23 @@ import com.example.moviemate.model.Movie;
 import com.example.moviemate.model.MovieResult;
 import com.example.moviemate.service.RetrofitClient;
 import com.example.moviemate.viewmodel.SharedViewModel;
-import com.github.mikephil.charting.components.Legend;
+
+import org.eazegraph.lib.charts.BarChart;
+import org.eazegraph.lib.models.BarModel;
+import org.eazegraph.lib.models.PieModel;
+
+/*import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ColorTemplate;*/
 
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -264,8 +270,20 @@ public class BarChartFragment extends Fragment {
 
 
 
-        List<BarEntry> movieEntries = new ArrayList<>();
-        movieEntries.add(new BarEntry(0, 100));
+        barChart.addBar(new BarModel(topMovies.get(0).getOriginalTitle(),new BigDecimal(topMovies.get(0).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF123456));
+        barChart.addBar(new BarModel(topMovies.get(1).getOriginalTitle(),new BigDecimal(topMovies.get(1).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),  0xFF343456));
+        barChart.addBar(new BarModel(topMovies.get(2).getOriginalTitle(),new BigDecimal(topMovies.get(2).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF563456));
+        barChart.addBar(new BarModel(topMovies.get(3).getOriginalTitle(),new BigDecimal(topMovies.get(3).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF873F56));
+        barChart.addBar(new BarModel(topMovies.get(4).getOriginalTitle(),new BigDecimal(topMovies.get(4).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF56B7F1));
+
+
+        barChart.startAnimation();
+
+
+
+        /*List<BarEntry> movieEntries = new ArrayList<>();
+        float pop1 = new BigDecimal(topMovies.get(0).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue();
+        movieEntries.add(new BarEntry(0, pop1));
         movieEntries.add(new BarEntry(1, 48));
         movieEntries.add(new BarEntry(2, 23));
         movieEntries.add(new BarEntry(3, 84));
@@ -300,7 +318,7 @@ public class BarChartFragment extends Fragment {
         description.setText("Popularity for Each Movie");
         binding.barChart.setDescription(description);
         //refresh the chart
-        binding.barChart.invalidate();
+        binding.barChart.invalidate();*/
     }
 
 }

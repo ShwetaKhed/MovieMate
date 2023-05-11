@@ -25,8 +25,7 @@ import com.example.moviemate.model.Movie;
 import com.example.moviemate.model.MovieResult;
 import com.example.moviemate.service.RetrofitClient;
 import com.example.moviemate.viewmodel.SharedViewModel;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.renderer.LegendRenderer;
+
 
 
 import org.eazegraph.lib.charts.PieChart;
@@ -55,7 +54,6 @@ public class PieChartFragment extends Fragment {
 
     private boolean isStartDateChanged;
     private boolean isEndDateChanged;
-
     PieChart pieChart;
     EditText startDate ;
     EditText endDate;
