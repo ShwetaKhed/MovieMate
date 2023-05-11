@@ -11,16 +11,17 @@
         android:layout_width="150dp"
         android:layout_height="53dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="60dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="215dp"
-        android:background="@color/white"
+        android:background="#14000000"
         android:hint="Start Date"
         android:inputType="date|datetime"
         android:maxLines="1"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.061"
+        app:layout_constraintHorizontal_bias="0.103"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -30,13 +31,14 @@
         android:layout_width="150dp"
         android:layout_height="53dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="60dp"
         android:layout_marginRight="24dp"
-        android:layout_marginBottom="215dp"
-        android:background="@color/white"
+        android:layout_marginBottom="200dp"
+        android:background="#14000000"
         android:hint="End Date"
         android:inputType="date|datetime"
         android:maxLines="1"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.881"
@@ -44,7 +46,39 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <com.github.mikephil.charting.charts.BarChart
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/viewChartButton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:background="#E91E63"
+        android:text="View Chart"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/endDate" />
+
+
+    <org.eazegraph.lib.charts.BarChart
+        android:id="@+id/barChart"
+        android:layout_width="314dp"
+        android:layout_height="302dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="168dp"
+        android:layout_marginBottom="23dp"
+        android:layout_weight="1"
+        android:padding="6dp"
+        app:egFixedBarWidth="true"
+        app:egBarWidth="20dp"
+        app:egLegendHeight="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.149" />
+
+<!--    <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart"
         android:textColor="#FFFFFF"
         android:layout_width="343dp"
@@ -56,19 +90,37 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         tools:layout_editor_absoluteX="38dp"
-        tools:ignore="MissingConstraints"/>
+        tools:ignore="MissingConstraints"/>-->
 
     <TextView
-        android:id="@+id/barGraphTitle"
-        android:layout_width="344dp"
-        android:layout_height="39dp"
-        android:text="Popularity of Movies for the Selected Date/Time"
-        android:textColor="#FFFFFF"
-        android:visibility="visible"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="43dp"
-        tools:visibility="visible"
-        tools:ignore="MissingConstraints"/>
+        android:id="@+id/textView3"
+        android:layout_width="406dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="332dp"
+        android:text="Select dates to display Bar Chart for Popularity of Movies"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/invalidText"
+        android:layout_width="406dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginEnd="332dp"
+        android:text=""
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
