@@ -234,6 +234,7 @@ public class PieChartFragment extends Fragment {
             binding.invalidText.setText("Select different dates and retry");
            return;
         }
+        binding.invalidText.setText("");
 
         BigDecimal totalPopularity = new BigDecimal(0.00);
         for (int index = 0; index < 5; index ++)
@@ -249,31 +250,31 @@ public class PieChartFragment extends Fragment {
                         topMovies.get(0).getOriginalTitle(),
                         new BigDecimal(topMovies.get(0).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),
                         Color.parseColor("#FFA726")));
-
+        binding.label1.setText(topMovies.get(0).getOriginalTitle());
         pieChart.addPieSlice(
                 new PieModel(
                         topMovies.get(1).getOriginalTitle(),
                         new BigDecimal(topMovies.get(1).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),
                         Color.parseColor("#66BB6A")));
-        //label2.setText(topMovies.get(1).getOriginalTitle());
+        binding.label2.setText(topMovies.get(1).getOriginalTitle());
         pieChart.addPieSlice(
                 new PieModel(
                         topMovies.get(2).getOriginalTitle(),
                         new BigDecimal(topMovies.get(2).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),
                         Color.parseColor("#EF5350")));
-        //label3.setText(topMovies.get(2).getOriginalTitle());
+        binding.label3.setText(topMovies.get(2).getOriginalTitle());
         pieChart.addPieSlice(
                 new PieModel(
                         topMovies.get(3).getOriginalTitle(),
                         new BigDecimal(topMovies.get(3).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),
                         Color.parseColor("#29B6F6")));
-        //label4.setText(topMovies.get(3).getOriginalTitle());
+        binding.label4.setText(topMovies.get(3).getOriginalTitle());
         pieChart.addPieSlice(
                 new PieModel(
                         topMovies.get(4).getOriginalTitle(),
                         new BigDecimal(topMovies.get(4).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),
                         Color.parseColor("#d885ed")));
-        //label5.setText(topMovies.get(4).getOriginalTitle());
+        binding.label5.setText(topMovies.get(4).getOriginalTitle());
         pieChart.startAnimation();
 
 

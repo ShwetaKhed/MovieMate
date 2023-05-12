@@ -30,7 +30,6 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     public static Context context;
 
 
-
     public WishlistAdapter(Context context, List<UserMovies> movielist) {
         this.context = context;
         this.movieList = movielist;

@@ -36,14 +36,21 @@ public class WishlistFragment extends Fragment {
     private DatabaseReference mDatabaseRef;
     private WishlistFragmentBinding binding;
     Context context;
-    private List<Movie> userSelectedMovies = new ArrayList<Movie>();
+    private List<UserMovies> userSelectedMovies = new ArrayList<UserMovies>();
 
     private List<String> movieNames = new ArrayList<>();
     private UserMoviesViewModel userMoviesViewModel;
+
+    private String userEmail;
+
+    View fragmentView;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         userMoviesViewModel = new ViewModelProvider(requireActivity()).get(UserMoviesViewModel.class);
         userMoviesViewModel.getAllUserMovies().observe(this, userMovies -> {
             for (UserMovies movie1: userMovies
@@ -51,12 +58,21 @@ public class WishlistFragment extends Fragment {
                 if (!this.movieNames.contains(movie1.originalTitle)) {
                     Log.d(movie1.originalTitle, movie1.overview);
                     Log.d("User email", movie1.getUserEmail());
-                    Movie movie = new Movie();
-                    movie.setOriginal_language(movie1.originalTitle);
-                    movie.setPosterPath(movie1.posterPath);
-                    this.movieNames.add(movie1.originalTitle);
-                    this.userSelectedMovies.add(movie);
+                    if (movie1.getUserEmail().equals(userEmail)) {
+                        UserMovies movie = new UserMovies();
+                        movie.setOriginalTitle(movie1.originalTitle);
+                        movie.setPosterPath(movie1.posterPath);
+                        this.movieNames.add(movie1.originalTitle);
+                        this.userSelectedMovies.add(movie);
+                    }
+                    WishlistAdapter itemAdapter = new WishlistAdapter(getContext(),WishlistFragment.this.userSelectedMovies);
+                    RecyclerView recyclerView
+                            = fragmentView.findViewById(R.id.recycleView);
+                    recyclerView.setLayoutManager(
+                            new LinearLayoutManager(getContext()));
+                    recyclerView.setAdapter(itemAdapter);
                 }
+
             }
         } );
 
@@ -78,6 +94,7 @@ public class WishlistFragment extends Fragment {
             @Override
             public void onChanged(@Nullable String s) {
                 System.out.println("email" + s);
+                WishlistFragment.this.userEmail = s;
                 readMoviesDataFromFirebase(view, s);
             }
         });
@@ -90,6 +107,9 @@ public class WishlistFragment extends Fragment {
                               Bundle savedInstanceState)
     {
         Log.d("Tag", String.valueOf(this.userSelectedMovies.size()));
+        //TODO: Do Your stuff here
+        fragmentView = view;
+
 
     }
 
@@ -123,8 +143,9 @@ public class WishlistFragment extends Fragment {
                             UserMovies movies = movieList.get(i);
                             System.out.println("Title of Movie : " + movies.originalTitle);
                         }
-                        //TODO: Do Your stuff here
-                        WishlistAdapter itemAdapter = new WishlistAdapter(getContext(),movieList);
+
+
+                      /*  WishlistAdapter itemAdapter = new WishlistAdapter(getContext(),movieList);
                         RecyclerView recyclerView
                                 = view.findViewById(R.id.recycleView);
                         recyclerView.setLayoutManager(
@@ -132,7 +153,7 @@ public class WishlistFragment extends Fragment {
 
                         // adapter instance is set to the
                         // recyclerview to inflate the items.
-                        recyclerView.setAdapter(itemAdapter);
+                        recyclerView.setAdapter(itemAdapter);*/
                     }
                     else {
                         //data for this user didn't exist

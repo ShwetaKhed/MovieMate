@@ -49,7 +49,7 @@ public class MovieContentActivity extends AppCompatActivity {
         ImageView imageView = (ImageView) findViewById(R.id.ivMovie);
         title.setText(movie.getOriginalTitle());
         overview.setText(movie.getOverview());
-        releaseDate.setText("Release Date" + movie.getReleaseDate());
+        releaseDate.setText(movie.getReleaseDate());
         Glide.with(this).load(movie.getPosterPath()).into(imageView);
 
         // initializing viewModels

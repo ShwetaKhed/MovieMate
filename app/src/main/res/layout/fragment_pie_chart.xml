@@ -82,6 +82,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="332dp"
         android:text="Select dates to display pie chart"
+        android:textStyle="bold"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -101,6 +102,18 @@
         app:layout_constraintTop_toBottomOf="@+id/piechart"
         app:layout_constraintVertical_bias="0.061" />
 
+    <TextView
+        android:id="@+id/label1"
+        android:layout_width="280dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="16dp"
+        android:text=""
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/piechart"
+        app:layout_constraintVertical_bias="0.048" />
+
     <View
         android:id="@+id/view2"
         android:layout_width="40dp"
@@ -111,6 +124,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view1"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/label2"
+        android:layout_width="280dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="16dp"
+        android:textStyle="bold"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label1"
         app:layout_constraintVertical_bias="0.0" />
 
     <View
@@ -125,6 +151,19 @@
         app:layout_constraintTop_toBottomOf="@+id/view2"
         app:layout_constraintVertical_bias="0.0" />
 
+    <TextView
+        android:id="@+id/label3"
+        android:layout_width="280dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:textStyle="bold"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label2"
+        app:layout_constraintVertical_bias="0.0" />
+
     <View
         android:id="@+id/view4"
         android:layout_width="40dp"
@@ -135,6 +174,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view3"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/label4"
+        android:layout_width="280dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:textStyle="bold"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label3"
         app:layout_constraintVertical_bias="0.0" />
 
     <View
@@ -149,6 +201,19 @@
         app:layout_constraintTop_toBottomOf="@+id/view4"
         app:layout_constraintVertical_bias="0.0" />
 
+    <TextView
+        android:id="@+id/label5"
+        android:layout_width="280dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:textStyle="bold"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label4"
+        app:layout_constraintVertical_bias="0.0" />
+
 
 
     <TextView
@@ -157,6 +222,7 @@
         android:layout_height="18dp"
         android:layout_marginTop="250dp"
         android:layout_marginEnd="332dp"
+        android:textStyle="bold"
         android:text=""
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -166,19 +232,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/label1"
-        android:layout_width="300dp"
-        android:layout_height="18dp"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="500dp"
-        android:text="label 1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
