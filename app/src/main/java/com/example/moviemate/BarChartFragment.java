@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.moviemate.R;
 import com.example.moviemate.databinding.ActivityMainBinding;
@@ -76,6 +77,14 @@ public class BarChartFragment extends Fragment {
     EditText startDate ;
     EditText endDate;
 
+    TextView movieName1;
+    TextView movieName2;
+    TextView movieName3;
+    TextView movieName4;
+    TextView movieName5;
+    TextView popularity;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,6 +95,12 @@ public class BarChartFragment extends Fragment {
         barChart = view.findViewById(R.id.barChart);
         startDate = view.findViewById(R.id.startDate);
         endDate = view.findViewById(R.id.endDate);
+        movieName1 = view.findViewById(R.id.movieName1);
+        movieName2 = view.findViewById(R.id.movieName2);
+        movieName3 = view.findViewById(R.id.movieName3);
+        movieName4 = view.findViewById(R.id.movieName4);
+        movieName5 = view.findViewById(R.id.movieName5);
+        popularity = view.findViewById(R.id.popularity);
 
         System.out.println("Bar chart activity " + this.getActivity());
         for (int i = 450; i < 500; i++) {
@@ -281,16 +296,19 @@ public class BarChartFragment extends Fragment {
         barChart.addBar(bm4);
         barChart.addBar(bm5);
 
-        bm1.setShowLabel(true);
-        bm2.setShowLabel(true);
-        bm3.setShowLabel(true);
-        bm4.setShowLabel(true);
-        bm5.setShowLabel(true);
-        bm1.setLegendLabel(topMovies.get(0).getOriginalTitle());
-        bm2.setLegendLabel(topMovies.get(1).getOriginalTitle());
-        bm3.setLegendLabel(topMovies.get(2).getOriginalTitle());
-        bm4.setLegendLabel(topMovies.get(3).getOriginalTitle());
-        bm5.setLegendLabel(topMovies.get(4).getOriginalTitle());
+        bm1.setShowLabel(false);
+        bm2.setShowLabel(false);
+        bm3.setShowLabel(false);
+        bm4.setShowLabel(false);
+        bm5.setShowLabel(false);
+
+        movieName1.setText(topMovies.get(0).getOriginalTitle());
+        movieName2.setText(topMovies.get(1).getOriginalTitle());
+        movieName3.setText(topMovies.get(2).getOriginalTitle());
+        movieName4.setText(topMovies.get(3).getOriginalTitle());
+        movieName5.setText(topMovies.get(4).getOriginalTitle());
+        popularity.setText("Popularity Index (Out of 100)");
+
 
         /*barChart.addBar(new BarModel(topMovies.get(0).getOriginalTitle(),new BigDecimal(topMovies.get(0).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF123456));
         barChart.addBar(new BarModel(topMovies.get(1).getOriginalTitle(),new BigDecimal(topMovies.get(1).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),  0xFF343456));
