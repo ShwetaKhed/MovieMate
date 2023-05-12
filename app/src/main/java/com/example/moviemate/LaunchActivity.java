@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 
+import android.os.Debug;
 import android.view.LayoutInflater;
 
 import android.view.View;
@@ -29,6 +30,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.work.Constraints;
 import androidx.work.Data;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
@@ -48,8 +50,10 @@ import com.example.moviemate.worker.PeriodicWorker;
 import com.google.android.material.navigation.NavigationView;
 
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
 
+import com.google.type.TimeOfDay;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 
 
@@ -58,8 +62,11 @@ import android.widget.DatePicker;
 
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -153,6 +160,8 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
     private UserMoviesViewModel userMoviesViewModel;
     private SharedViewModel sharedViewModel;
 
+    List<UserMovies> allWishlistMovies = new ArrayList<UserMovies>();
+
     double lat = 0.0;
     double longitutde = 0.0;
 
@@ -209,7 +218,9 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         });
         launchMaps(this);
 
-        saveUserMovieWishlistOnFirebase();
+//       WorkManager.getInstance().cancelAllWork();
+//       WorkManager.getInstance().cancelAllWorkByTag(PeriodicWorker.PERIODIC_WORKER_TAG);
+         saveUserMovieWishlistOnFirebase();
     }
 
     @Override
@@ -240,16 +251,56 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
             }
         });
 
-        // initializing viewModels
         userMoviesViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(UserMoviesViewModel.class);
-        userMoviesViewModel.getAllUserMovies().observe(this, new Observer<List<UserMovies>>() {
-            @Override
-            public void onChanged(@Nullable List<UserMovies> movies) {
-                System.out.println("On movies adding:" + movies);
+//        userMoviesViewModel.getAllUserMovies().observe(this, new Observer<List<UserMovies>>() {
+//            @Override
+//            public void onChanged(@Nullable List<UserMovies> movies) {
+//                System.out.println("on Movie add to wishlist");
+//                sendOneTimeRequestToWorkManager( userEmail, movies); //Keep it for the demo only.
+//
+//            }
+//        });
 
-                sendOneTimeRequestToWorkManager( userEmail, movies);
+        userMoviesViewModel.getAllUserMovies().observe(this, userMovies -> {
+            for (UserMovies movie1: userMovies
+            ) {
+                Log.d(movie1.originalTitle, movie1.overview);
+                Log.d("User email", movie1.getUserEmail());
+                allWishlistMovies.add(movie1);
             }
-        });
+            System.out.println("Save movies on the firebase " );
+            getCurrentPeriodicWorkers();
+        } );
+    }
+
+
+    //Check if any periodic worker exists if yes than utilize that only
+    private void getCurrentPeriodicWorkers()
+    {
+        ListenableFuture<List<WorkInfo>> future = WorkManager.getInstance().getWorkInfosByTag(PeriodicWorker.PERIODIC_WORKER_TAG);
+        try {
+            List<WorkInfo> workersInfo = future.get();
+            for (WorkInfo workInfo : workersInfo) {
+                //if (workInfo.getState() == WorkInfo.State.RUNNING)
+                {
+                    String workerClassName = workInfo.getClass().getName();
+                    UUID workerId = workInfo.getId();
+                    System.out.println("current running worker " +  workerClassName + ", uuid " + workerId);
+                }
+            }
+            if(workersInfo == null || workersInfo.size()==0)
+            {
+                System.out.println("No worker exist start he new worker");
+                sendPeriodicRequestToWorkManager(userEmail, allWishlistMovies);
+            }
+            else {
+                System.out.println("Worker already exist update it with id  " + workersInfo.get(0).getId());
+                updatePeriodicRequestToWorkManager(userEmail, allWishlistMovies,workersInfo.get(0).getId());
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            // Handle the exception
+            System.out.println("exception  running worker " + e);
+        }
     }
 
     private void sendOneTimeRequestToWorkManager(String userEmail,  List<UserMovies> userMovies)
@@ -279,72 +330,115 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                     @Override
                     public void onChanged(WorkInfo workInfo) {
                         if(workInfo != null) {
-                            if(workInfo.getState().isFinished())
-                            {
-                                Data outputData = workInfo.getOutputData();
-                                String output = outputData.getString("OUTPUT");
-                                System.out.println("Output from worker : "+ output + "\n");
-                            }
                             String status = workInfo.getState().name();
-                            System.out.println(status + "\n");
+                            System.out.println("Worker Status: "+ status + "\n");
                         }
                     }
                 });
         WorkManager.getInstance().enqueue(oneTimeWorkRequest);
     }
 
-    private void sendPeriodicRequestToWorkManager(UserMovies userMovie)
+    private void sendPeriodicRequestToWorkManager(String userEmail,  List<UserMovies> userMovies)
     {
         Gson gson = new Gson();
-        String userMovie_json =  gson.toJson(userMovie);
-        System.out.println("Data to send " + userMovie_json);
+        String userMovie_json =  gson.toJson(userMovies);
+        System.out.println(" Data to send on firebase by Worker" + userMovie_json);
+
         //Add work manager here and add the call in queue.
         //Set constraints
         Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.UNMETERED)  //Connect with Unmetered network only
-                .setRequiresCharging(true)
-                //.setTimeOfDay(TimeOfDay.fromHoursOfDay(9, 17)) // Set the time interval between 9 AM and 5 PM
                 .build();
 
-        //Call the  PeriodicWorkRequest
+        //Get the initial delay time
+        long initialDelay = getDelayUntilOfNight(23,0);
+
         PeriodicWorkRequest periodicWorkRequest =
-                new PeriodicWorkRequest.Builder(PeriodicWorker.class, 1, TimeUnit.MINUTES)
+                new PeriodicWorkRequest.Builder(PeriodicWorker.class, 1, TimeUnit.DAYS)
+                        .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
                         .setConstraints(constraints)
-                        .setInputData(  //eg
+                        .addTag(PeriodicWorker.PERIODIC_WORKER_TAG)
+                        .setInputData(
                                 new Data.Builder()
                                         .putString(PeriodicWorker.MOVIE_WISHLIST_KEY, userMovie_json)
+                                        .putString(PeriodicWorker.USER_EMAIL_KEY, userEmail)
                                         .build()
                         )
                         .build();
 
+        // var guid = periodicWorkRequest.getId();
         WorkManager.getInstance().getWorkInfoByIdLiveData(periodicWorkRequest.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
                         if(workInfo != null) {
-                            if(workInfo.getState().isFinished())
-                            {
-                                Data outputData = workInfo.getOutputData();
-                                String output = outputData.getString("OUTPUT");
-                                System.out.println("Output from worker : "+ output + "\n");
-                            }
                             String status = workInfo.getState().name();
                             System.out.println("Worker Status : " + status + "\n");
+                            //if successfully saved on the server it's going to delete the current room data
                         }
                     }
                 });
-        WorkManager.getInstance().enqueue(periodicWorkRequest);
+
+        WorkManager.getInstance().enqueue(
+                periodicWorkRequest
+        );
     }
 
-    public Fragment getVisibleFragment(){
-        FragmentManager fragmentManager = this.getSupportFragmentManager();
-        List<Fragment> fragments = fragmentManager.getFragments();
-        if(fragments != null){
-            for(Fragment fragment : fragments){
-                if(fragment != null && fragment.isVisible())
-                    return fragment;
-            }
+    private void updatePeriodicRequestToWorkManager(String userEmail,  List<UserMovies> userMovies, UUID uuid)
+    {
+        Gson gson = new Gson();
+        String userMovie_json =  gson.toJson(userMovies);
+        System.out.println(" Data to send on firebase by Worker" + userMovie_json);
+
+        //Add work manager here and add the call in queue.
+        //Set constraints
+        Constraints constraints = new Constraints.Builder()
+                .build();
+
+        //Get the initial delay time
+        long initialDelay = getDelayUntilOfNight(23,0);
+
+        // Create new WorkRequest from existing Worker, new constraints, and the id of the old WorkRequest.
+        PeriodicWorkRequest updatedWorkRequest =
+                new PeriodicWorkRequest.Builder(PeriodicWorker.class, 1, TimeUnit.DAYS)
+                        .setId(uuid)
+                        .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+                        .setConstraints(constraints)
+                        .addTag(PeriodicWorker.PERIODIC_WORKER_TAG)
+                        .setInputData(
+                                new Data.Builder()
+                                        .putString(PeriodicWorker.MOVIE_WISHLIST_KEY, userMovie_json)
+                                        .putString(PeriodicWorker.USER_EMAIL_KEY, userEmail)
+                                        .build()
+                        )
+                        .build();
+
+        System.out.println("worker has been updated");
+        // Pass the new WorkRequest to updateWork().
+        WorkManager.getInstance().updateWork(updatedWorkRequest);
+
+    }
+
+    public static long getDelayUntilOfNight(int hour, int minute) {
+        // Get the current time
+        Calendar now = Calendar.getInstance();
+        //Get the current time in millis
+        long currentTimeMillis = now.getTimeInMillis();
+
+        // Set the target time
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        // Add one day in case of if the new time is before the current time
+        if (calendar.before(now)) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
-        return null;
+
+        // Calculate the delay until the target time
+        long delayMillis = calendar.getTimeInMillis() - currentTimeMillis;
+        //return the delay in millis
+        return delayMillis;
     }
 }
