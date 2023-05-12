@@ -8,6 +8,22 @@
     android:orientation="vertical"
     android:scrollbars="vertical"
     tools:context=".BookingFragment">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchText"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="155dp"
+        android:background="#E91E63"
+        android:text="Search"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:orientation="vertical"

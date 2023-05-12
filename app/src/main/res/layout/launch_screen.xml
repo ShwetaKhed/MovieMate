@@ -20,12 +20,17 @@
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/navigation_menu" >
 
-        <Button
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/sign_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginLeft="75dp"
-            android:text="Sign Out" />
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:background="#E91E63"
+            android:text="Sign Out"/>
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>
