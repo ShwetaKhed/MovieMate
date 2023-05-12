@@ -291,8 +291,6 @@ public class BarChartFragment extends Fragment {
         bm3.setLegendLabel(topMovies.get(2).getOriginalTitle());
         bm4.setLegendLabel(topMovies.get(3).getOriginalTitle());
         bm5.setLegendLabel(topMovies.get(4).getOriginalTitle());
-        Rect bounds = bm1.getTextBounds();
-
 
         /*barChart.addBar(new BarModel(topMovies.get(0).getOriginalTitle(),new BigDecimal(topMovies.get(0).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF123456));
         barChart.addBar(new BarModel(topMovies.get(1).getOriginalTitle(),new BigDecimal(topMovies.get(1).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),  0xFF343456));
