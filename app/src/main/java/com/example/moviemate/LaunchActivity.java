@@ -142,6 +142,7 @@ import com.mapbox.mapboxsdk.utils.BitmapUtils;
 
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -230,8 +231,16 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         mCalendar.set(Calendar.MONTH, month);
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(mCalendar.getTime());
+        // Get the current time
+        Calendar now = Calendar.getInstance();
+        if(mCalendar.getTimeInMillis() > now.getTimeInMillis())
+        {
+            Toast.makeText(this, "Please select a valid date", Toast.LENGTH_SHORT).show();
+            return;
+        }
         //tvDate.setText(selectedDate);
         System.out.println("selected date " + selectedDate);
+        //Compare here with the today's date user should not be able to select the future date.
         model.setDateOfBirth(selectedDate);
         sharedViewModel.setStartDate(selectedDate);
         sharedViewModel.setEndDate(selectedDate);
@@ -268,7 +277,6 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                 Log.d("User email", movie1.getUserEmail());
                 allWishlistMovies.add(movie1);
             }
-            System.out.println("Save movies on the firebase " );
             getCurrentPeriodicWorkers();
         } );
     }
@@ -396,7 +404,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
 
         //Get the initial delay time
         long initialDelay = getDelayUntilOfNight(23,0);
-
+        System.out.println("initialDelay : " + initialDelay);
         // Create new WorkRequest from existing Worker, new constraints, and the id of the old WorkRequest.
         PeriodicWorkRequest updatedWorkRequest =
                 new PeriodicWorkRequest.Builder(PeriodicWorker.class, 1, TimeUnit.DAYS)
@@ -411,6 +419,19 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                                         .build()
                         )
                         .build();
+
+        // var guid = periodicWorkRequest.getId();
+        WorkManager.getInstance().getWorkInfoByIdLiveData(updatedWorkRequest.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo) {
+                        if(workInfo != null) {
+                            String status = workInfo.getState().name();
+                            System.out.println("Updated Worker Status : " + status + "\n");
+                            //if successfully saved on the server it's going to delete the current room data
+                        }
+                    }
+                });
 
         System.out.println("worker has been updated");
         // Pass the new WorkRequest to updateWork().
@@ -430,7 +451,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-
+        System.out.println("cal time " +  calendar.getTime());
         // Add one day in case of if the new time is before the current time
         if (calendar.before(now)) {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
