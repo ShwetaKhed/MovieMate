@@ -204,10 +204,6 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
 
         sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
 
-       /* TextView first_name = findViewById(R.id.first_name);
-        // Change to name
-        first_name.setText("Welcome" + email);*/
-
         Button sign_out = findViewById(R.id.sign_out);
         sign_out.setOnClickListener(new View.OnClickListener() {
             @Override

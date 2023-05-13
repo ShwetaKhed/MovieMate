@@ -63,8 +63,6 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*startActivity(new Intent(LoginActivity.this,
-                        LaunchActivity.class));*/
                 String txt_Email = emailEditText.getText().toString().trim();
                 String txt_Pwd = passwordEditText.getText().toString().trim();
 
@@ -73,10 +71,11 @@ public class LoginActivity extends AppCompatActivity {
                     toastMsg("Please enter Email");
                     return;
                 }
-               /* if (txt_Email.contains("@")) {
+                if (!txt_Email.contains("@") && !txt_Email.contains(".com")) {
+                    emailEditText.setError("Invalid Email" );
                     toastMsg("Invalid Email");
                     return;
-                }*/
+                }
                 if(TextUtils.isEmpty(txt_Pwd)) {
                     passwordEditText.setError( "Password is required!" );
                     toastMsg("Please enter Password");

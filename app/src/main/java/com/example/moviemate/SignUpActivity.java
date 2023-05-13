@@ -126,6 +126,11 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
                     toastMsg("Please enter Email");
                     return;
                 }
+                if (!email_txt.contains("@") && !email_txt.contains(".com")) {
+                    emailEditText.setError("Invalid Email" );
+                    toastMsg("Invalid Email");
+                    return;
+                }
 
                 if(TextUtils.isEmpty(password_txt)) {
                     passwordEditText.setError( "Password is required!" );
@@ -205,6 +210,13 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         String selectedDate = DateFormat.getDateInstance(DateFormat.FULL).format(mCalendar.getTime());
         System.out.println("selected date " + selectedDate);
+        Calendar now = Calendar.getInstance();
+        if(mCalendar.getTimeInMillis() > now.getTimeInMillis())
+        {
+            binding.editDob.setError("Invalid Date");
+            Toast.makeText(this, "Please select a valid date", Toast.LENGTH_SHORT).show();
+            return;
+        }
         binding.editDob.setText(selectedDate);
     }
 }
