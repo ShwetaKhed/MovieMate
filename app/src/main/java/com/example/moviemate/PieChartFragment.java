@@ -231,7 +231,7 @@ public class PieChartFragment extends Fragment {
             }
         }
         if (topMovies.isEmpty()) {
-            binding.invalidText.setText("Select different dates and retry");
+            binding.invalidText.setText("No data. Select different dates and retry");
            return;
         }
         binding.invalidText.setText("");

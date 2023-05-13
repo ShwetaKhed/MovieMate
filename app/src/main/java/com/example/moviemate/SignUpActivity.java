@@ -162,10 +162,7 @@ public class SignUpActivity extends AppCompatActivity implements DatePickerDialo
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     String msg = "Registration Successful";
-                    /*Intent intent = new Intent(SignUpActivity.this, LaunchActivity.class);
-                    intent.putExtra("userEmail", email_txt);
-
-                    startActivity(intent);*/
+                    toastMsg(msg);
                     Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                     startActivity(intent);
                     //Save on firebase

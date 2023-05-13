@@ -99,11 +99,11 @@ public class MapActivity extends Fragment {
                 {
                     if(task.getResult().exists())
                     {
-                        Toast.makeText(getContext(), "Successfully Read", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Successfully Read", Toast.LENGTH_SHORT).show();
                         DataSnapshot dataSnapshot = task.getResult();
                         String add = String.valueOf(dataSnapshot.child("address").getValue());
                         Log.d("Tag", add);
-                        String addressToGeocode = "951-955,Dandenong road,Malvern East,Vic-3145";
+                        //String addressToGeocode = "951-955,Dandenong road,Malvern East,Vic-3145";
 
                         String encodedAddress = null;
                         try {
