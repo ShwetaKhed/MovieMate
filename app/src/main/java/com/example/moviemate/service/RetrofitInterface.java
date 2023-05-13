@@ -17,8 +17,6 @@ public interface RetrofitInterface {
     @GET("movie/upcoming?api_key=" + API_KEY)
     Call<MovieResult> getUpcoming();
 
-    @GET("movie/top_rated?api_key=6f6d1b438fddb937dd48a7f88b87eae7&page=2")
-    Call<MovieResult> getPopularMovies();
 
     @GET("movie/top_rated")
     Call<MovieResult> getPopularMovies1(@Query("api_key") String api_key, @Query("page") String page);
