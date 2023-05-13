@@ -4,11 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2C2F31"
+    android:background="@drawable/background"
+    android:backgroundTint="#57171717"
+    android:backgroundTintMode="src_atop"
     android:gravity="center|top"
     android:orientation="vertical"
     android:visibility="visible"
     tools:visibility="visible">
+
 
     <LinearLayout
         android:id="@+id/top_container"
@@ -96,7 +99,6 @@
             android:textSize="20sp"
             android:visibility="visible"
             tools:visibility="visible" />
-
 
 
         <Spinner
