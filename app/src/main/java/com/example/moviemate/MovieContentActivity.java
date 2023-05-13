@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,6 +33,10 @@ public class MovieContentActivity extends AppCompatActivity {
     private MovieContentBinding binding;
     private UserMoviesViewModel userMoviesViewModel;
 
+    Button sendButton;
+
+    Movie movie;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = MovieContentBinding.inflate(getLayoutInflater());
@@ -41,6 +46,7 @@ public class MovieContentActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.dark_purple)));
+        movie = (Movie) getIntent().getSerializableExtra("movie");
 
 
         Movie movie = (Movie) getIntent().getSerializableExtra("movie");
@@ -86,6 +92,15 @@ public class MovieContentActivity extends AppCompatActivity {
             }
         } );
 
+        sendButton = binding.reminderButton;
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MovieContentActivity.this, ShareScreenActivity.class);
+                intent.putExtra("movie", movie);
+                startActivity(intent);
+            }
+        });
 
     }
     @Override

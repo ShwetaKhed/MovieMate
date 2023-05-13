@@ -47,11 +47,8 @@
         <activity android:name=".SignUpActivity"
             android:exported="true"
             android:theme="@style/Theme.MovieMate.NoActionBar"/>/>
-
-
-        <activity
-            android:name=".MovieContentActivity" />
-
+        <activity android:name=".MovieContentActivity" />
+        <activity android:name=".ShareScreenActivity" />
         <activity android:name=".BookingFragment" />
 
         <meta-data
