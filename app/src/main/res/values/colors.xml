@@ -10,4 +10,5 @@
     <color name = "grey">#00FFFFFF</color>
     <color name="black1">#E4000000</color>
     <color name="red">#E1E91E63</color>
+    <color name='dark_purple'>#E62C233C</color>
 </resources>

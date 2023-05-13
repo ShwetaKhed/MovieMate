@@ -24,6 +24,9 @@
             android:exported="false"
             android:label="@string/title_activity_map"
             android:theme="@style/Theme.MovieMate" />
+
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -44,7 +47,11 @@
         <activity android:name=".SignUpActivity"
             android:exported="true"
             android:theme="@style/Theme.MovieMate.NoActionBar"/>/>
-        <activity android:name=".MovieContentActivity" />
+
+
+        <activity
+            android:name=".MovieContentActivity" />
+
         <activity android:name=".BookingFragment" />
 
         <meta-data
