@@ -1,30 +1,16 @@
 package com.example.moviemate;
 
-import static android.content.ContentValues.TAG;
-
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.example.moviemate.viewmodel.SharedViewModel;
 import com.example.moviemate.viewmodel.UserViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,8 +24,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
         firebaseAuthentication();
-      /*  startActivity(new Intent(LoginActivity.this,
-                LaunchActivity.class));*/
         userViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(UserViewModel.class);
     }
 
@@ -98,22 +82,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void loginUser(String txt_email, String txt_pwd) {
-
-
-        // call the object and provide it with email id and password
        auth.signInWithEmailAndPassword(txt_email,
                 txt_pwd).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
                 String msg = "Login Successful";
                 toastMsg(msg);
-                // add current logged in user to liveData
                 userViewModel.setLoginEmail(txt_email);
-               // startActivity(new Intent(LoginActivity.this, LaunchActivity.class));
                 Intent intent = new Intent(LoginActivity.this, LaunchActivity.class);
                 intent.putExtra("userEmail", txt_email);
                 startActivity(intent);
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -74,7 +74,7 @@ public class PieChartFragment extends Fragment {
         endDate = view.findViewById(R.id.endDate);
         for (int i = 450; i < 500; i++) {
 
-            Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().
+            Call<MovieResult> call = RetrofitClient.getInstance().getApi().
                     getPopularMovies1("6f6d1b438fddb937dd48a7f88b87eae7", String.valueOf(i));
             call.enqueue(new Callback<MovieResult>() {
 

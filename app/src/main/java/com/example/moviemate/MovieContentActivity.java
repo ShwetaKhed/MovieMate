@@ -1,6 +1,5 @@
 package com.example.moviemate;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -11,23 +10,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
-import com.example.moviemate.databinding.LaunchScreenBinding;
 import com.example.moviemate.databinding.MovieContentBinding;
 import com.example.moviemate.entity.UserMovies;
 import com.example.moviemate.model.Movie;
 import com.example.moviemate.viewmodel.UserMoviesViewModel;
-import com.example.moviemate.viewmodel.UserViewModel;
-import com.google.gson.Gson;
 
 public class MovieContentActivity extends AppCompatActivity {
     private MovieContentBinding binding;
@@ -47,12 +39,9 @@ public class MovieContentActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.dark_purple)));
         movie = (Movie) getIntent().getSerializableExtra("movie");
-
-
         Movie movie = (Movie) getIntent().getSerializableExtra("movie");
         String email = getIntent().getStringExtra("userEmail");
         Log.d("emailemailemail", email);
-
         TextView title = (TextView) findViewById(R.id.movieTitle);
         TextView overview = (TextView) findViewById(R.id.movieOverview);
         TextView releaseDate = (TextView) findViewById(R.id.movieDate);

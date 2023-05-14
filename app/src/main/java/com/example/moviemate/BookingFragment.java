@@ -3,14 +3,10 @@ package com.example.moviemate;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -19,21 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviemate.databinding.BookingFragmentBinding;
-import com.example.moviemate.databinding.InfoFragmentBinding;
-import com.example.moviemate.databinding.LaunchScreenBinding;
 import com.example.moviemate.model.Movie;
 import com.example.moviemate.model.MovieResult;
-import com.example.moviemate.model.User;
 import com.example.moviemate.service.RetrofitClient;
 import com.example.moviemate.viewmodel.UserViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,7 +60,6 @@ public class BookingFragment extends Fragment {
                     for (int i = 0; i < finalMovieList.size(); i++) {
                         indMovieList.add(finalMovieList.get(i));
                     }
-
                 }
                 else {
                     for (int i = 0; i < finalMovieList.size(); i++) {
@@ -91,15 +77,10 @@ public class BookingFragment extends Fragment {
                 recyclerView.setLayoutManager(
                         new LinearLayoutManager(getContext()));
 
-                // adapter instance is set to the
-                // recyclerview to inflate the items.
                 recyclerView.setAdapter(itemAdapter);
             }
         });
 
-
-        // Inflate the layout for this fragment
-      //  return inflater.inflate(R.layout.booking_fragment, container, false);
         return view;
     }
 
@@ -117,7 +98,7 @@ public class BookingFragment extends Fragment {
     {
 
         super.onViewCreated(view, savedInstanceState);
-        Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().getUpcoming();
+        Call<MovieResult> call = RetrofitClient.getInstance().getApi().getUpcoming();
         call.enqueue(new Callback<MovieResult>() {
             @Override
             public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
@@ -147,12 +128,7 @@ public class BookingFragment extends Fragment {
                         = view.findViewById(R.id.recycleView);
                 recyclerView.setLayoutManager(
                         new LinearLayoutManager(getContext()));
-
-                // adapter instance is set to the
-                // recyclerview to inflate the items.
                 recyclerView.setAdapter(itemAdapter);
-
-
             }
 
             @Override

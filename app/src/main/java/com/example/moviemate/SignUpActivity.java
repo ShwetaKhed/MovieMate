@@ -12,14 +12,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
-import com.example.moviemate.databinding.ActivityMainBinding;
-import com.example.moviemate.databinding.LaunchScreenBinding;
 import com.example.moviemate.databinding.SignupBinding;
 import com.example.moviemate.model.User;
-import com.example.moviemate.viewmodel.SharedViewModel;
-import com.example.moviemate.viewmodel.UserViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
