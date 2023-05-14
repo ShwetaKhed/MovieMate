@@ -215,8 +215,6 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         });
         launchMaps(this);
 
-//       WorkManager.getInstance().cancelAllWork();
-//       WorkManager.getInstance().cancelAllWorkByTag(PeriodicWorker.PERIODIC_WORKER_TAG);
          saveUserMovieWishlistOnFirebase();
     }
 
@@ -261,19 +259,22 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
 //            @Override
 //            public void onChanged(@Nullable List<UserMovies> movies) {
 //                System.out.println("on Movie add to wishlist");
+//                if(movies.size()>0)
 //                sendOneTimeRequestToWorkManager( userEmail, movies); //Keep it for the demo only.
 //
 //            }
 //        });
 
         userMoviesViewModel.getAllUserMovies().observe(this, userMovies -> {
+            allWishlistMovies.clear();
             for (UserMovies movie1: userMovies
             ) {
                 Log.d(movie1.originalTitle, movie1.overview);
                 Log.d("User email", movie1.getUserEmail());
                 allWishlistMovies.add(movie1);
             }
-            getCurrentPeriodicWorkers();
+            if(allWishlistMovies.size()>0)
+                getCurrentPeriodicWorkers();
         } );
     }
 
@@ -281,7 +282,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
     //Check if any periodic worker exists if yes than utilize that only
     private void getCurrentPeriodicWorkers()
     {
-        ListenableFuture<List<WorkInfo>> future = WorkManager.getInstance().getWorkInfosByTag(PeriodicWorker.PERIODIC_WORKER_TAG);
+        ListenableFuture<List<WorkInfo>> future =  WorkManager.getInstance(this ).getWorkInfosByTag(PeriodicWorker.PERIODIC_WORKER_TAG);//WorkManager.getInstance().getWorkInfosByTag(PeriodicWorker.PERIODIC_WORKER_TAG);
         try {
             List<WorkInfo> workersInfo = future.get();
             for (WorkInfo workInfo : workersInfo) {
@@ -329,17 +330,24 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                         )
                         .build();
 
-        WorkManager.getInstance().getWorkInfoByIdLiveData(oneTimeWorkRequest.getId())
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(oneTimeWorkRequest.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
                         if(workInfo != null) {
                             String status = workInfo.getState().name();
                             System.out.println("Worker Status: "+ status + "\n");
+                            //if successfully saved on the server it's going to delete the current room data
+                            if(status =="SUCCEEDED")
+                            {
+                                //Delete room live data here
+                                userMoviesViewModel.deleteAll();
+                                PeriodicWorker.isDataSaveOnFireBase = false;
+                            }
                         }
                     }
                 });
-        WorkManager.getInstance().enqueue(oneTimeWorkRequest);
+        WorkManager.getInstance(this).enqueue(oneTimeWorkRequest);
     }
 
     private void sendPeriodicRequestToWorkManager(String userEmail,  List<UserMovies> userMovies)
@@ -370,7 +378,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                         .build();
 
         // var guid = periodicWorkRequest.getId();
-        WorkManager.getInstance().getWorkInfoByIdLiveData(periodicWorkRequest.getId())
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(periodicWorkRequest.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
@@ -378,11 +386,17 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                             String status = workInfo.getState().name();
                             System.out.println("Worker Status : " + status + "\n");
                             //if successfully saved on the server it's going to delete the current room data
+                            if (PeriodicWorker.isDataSaveOnFireBase)
+                            {
+                                //Delete room live data here
+                                userMoviesViewModel.deleteAll();
+                                PeriodicWorker.isDataSaveOnFireBase = false;
+                            }
                         }
                     }
                 });
 
-        WorkManager.getInstance().enqueue(
+        WorkManager.getInstance(this).enqueue(
                 periodicWorkRequest
         );
     }
@@ -399,8 +413,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                 .build();
 
         //Get the initial delay time
-        long initialDelay = getDelayUntilOfNight(23,0);
-        System.out.println("initialDelay : " + initialDelay);
+        long initialDelay = getDelayUntilOfNight(10,15);
         // Create new WorkRequest from existing Worker, new constraints, and the id of the old WorkRequest.
         PeriodicWorkRequest updatedWorkRequest =
                 new PeriodicWorkRequest.Builder(PeriodicWorker.class, 1, TimeUnit.DAYS)
@@ -417,7 +430,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                         .build();
 
         // var guid = periodicWorkRequest.getId();
-        WorkManager.getInstance().getWorkInfoByIdLiveData(updatedWorkRequest.getId())
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(updatedWorkRequest.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
@@ -425,13 +438,20 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                             String status = workInfo.getState().name();
                             System.out.println("Updated Worker Status : " + status + "\n");
                             //if successfully saved on the server it's going to delete the current room data
+                            if (PeriodicWorker.isDataSaveOnFireBase)
+                            {
+                                //Delete room live data here
+                                userMoviesViewModel.deleteAll();
+                                PeriodicWorker.isDataSaveOnFireBase = false;
+                            }
                         }
                     }
                 });
 
-        System.out.println("worker has been updated");
+
+        System.out.println("Worker has been updated");
         // Pass the new WorkRequest to updateWork().
-        WorkManager.getInstance().updateWork(updatedWorkRequest);
+        WorkManager.getInstance(this).updateWork(updatedWorkRequest);
 
     }
 
