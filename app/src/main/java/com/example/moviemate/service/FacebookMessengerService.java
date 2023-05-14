@@ -20,8 +20,7 @@ import okhttp3.*;
 public class FacebookMessengerService {
 
     OkHttpClient httpClient = new OkHttpClient();
-    private String accessToken = "EACF5VqagZBIoBACZASlZBOhwC4KoiVZC4OdgiC9w6kpZBi8yJZC4lMO0FGSiuoJVu4s1LIoK4dTZA4Pk6LnCOUM1wdFTIYIOE24kTqMCKtxK7IQYV4YL7V5dx86LioY1ZCnDYZBwOQoWmhZBQTdj6wegFm6xlKzFDg3YfCLyQG5nKz77MZAlMCpP9MN";
-
+    private final String accessToken = "EACF5VqagZBIoBACZASlZBOhwC4KoiVZC4OdgiC9w6kpZBi8yJZC4lMO0FGSiuoJVu4s1LIoK4dTZA4Pk6LnCOUM1wdFTIYIOE24kTqMCKtxK7IQYV4YL7V5dx86LioY1ZCnDYZBwOQoWmhZBQTdj6wegFm6xlKzFDg3YfCLyQG5nKz77MZAlMCpP9MN";
 
     public void sendMessage(String recipientId, String message){
 
