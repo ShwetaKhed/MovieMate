@@ -27,6 +27,7 @@ import com.example.moviemate.databinding.MovieContentBinding;
 import com.example.moviemate.databinding.ShareScreenBinding;
 import com.example.moviemate.entity.UserMovies;
 import com.example.moviemate.model.Movie;
+import com.example.moviemate.service.FacebookMessengerService;
 import com.example.moviemate.viewmodel.UserMoviesViewModel;
 
 import java.util.Properties;
@@ -49,6 +50,7 @@ public class ShareScreenActivity extends AppCompatActivity {
 
     Movie movie;
 
+    FacebookMessengerService facebookMessengerService = new FacebookMessengerService();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,8 +129,14 @@ public class ShareScreenActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-
-
+        binding.messengerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String textMessage = binding.message.getText().toString() + " " + movie.getOriginalTitle() + ", coming out on " + movie.getReleaseDate();
+                String recipientId = "6611845722169325";
+                facebookMessengerService.sendMessage(recipientId, textMessage);
+            }
+        });
 
     }
     @Override
