@@ -413,7 +413,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                 .build();
 
         //Get the initial delay time
-        long initialDelay = getDelayUntilOfNight(10,15);
+        long initialDelay = getDelayUntilOfNight(23,0);
         // Create new WorkRequest from existing Worker, new constraints, and the id of the old WorkRequest.
         PeriodicWorkRequest updatedWorkRequest =
                 new PeriodicWorkRequest.Builder(PeriodicWorker.class, 1, TimeUnit.DAYS)

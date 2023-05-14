@@ -142,24 +142,28 @@
 
     </LinearLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_save"
         android:layout_width="195dp"
         android:layout_height="wrap_content"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:text="Save"
+        android:background="#E91E63"
+        android:textColor="@android:color/white"
         android:visibility="visible"
         tools:visibility="visible" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_cancel"
         android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:text="Cancel"
+        android:background="#E91E63"
         android:translationY="10dp"
+        android:textColor="@android:color/white"
         android:visibility="visible"
         tools:visibility="visible" />
 
