@@ -1,14 +1,20 @@
 package com.example.moviemate.worker;
-
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory;
 import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.example.moviemate.dao.UserMoviesDao;
+import com.example.moviemate.database.UserMoviesDatabase;
 import com.example.moviemate.entity.UserMovies;
+import com.example.moviemate.viewmodel.UserMoviesViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
@@ -23,8 +29,9 @@ public class PeriodicWorker extends Worker {
     private static final String TAG = PeriodicWorker.class.getSimpleName();
     public static final String MOVIE_WISHLIST_KEY = "MOVIE_WISHLIST";
     public static final String USER_EMAIL_KEY = "USER_EMAIL";
-
     public static final String PERIODIC_WORKER_TAG = "PERIODIC_WORKER_TAG";
+
+    public static boolean isDataSaveOnFireBase;
     public PeriodicWorker(
             @NonNull Context context,
             @NonNull WorkerParameters params) {
@@ -34,10 +41,6 @@ public class PeriodicWorker extends Worker {
     @Override
     public Result doWork() {
         try {
-//            // Get the UUID value from the input data
-//            String uuid = getInputData().getString(PERIODIC_WORKER_UUID);
-//            System.out.println("static UUID" + uuid);
-            //get input data here
             Data data =  getInputData();
             String userMovieInfo = data.getString(MOVIE_WISHLIST_KEY);
 
@@ -47,6 +50,8 @@ public class PeriodicWorker extends Worker {
             String email =  data.getString(USER_EMAIL_KEY);
             //Send the movies list
             saveMoviesWishlistOnFirebase(email, userMovies);
+
+            isDataSaveOnFireBase = true;
             // Indicate whether the work finished successfully with the Result
             return Result.success();
 
@@ -57,6 +62,7 @@ public class PeriodicWorker extends Worker {
         }
     }
 
+    UserMoviesDatabase moviesDatabase;
     private void saveMoviesWishlistOnFirebase(String userEmail, List<UserMovies> userMovies)
     {
         //Get the data before @ in the email address and consider it as the username of the user

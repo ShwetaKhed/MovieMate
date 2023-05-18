@@ -1,26 +1,14 @@
 package com.example.moviemate;
 
-
-import androidx.fragment.app.Fragment;
-
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-
-
 import android.os.Bundle;
-
-
-import android.os.Debug;
 import android.view.LayoutInflater;
-
 import android.view.View;
 import android.widget.Button;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -30,37 +18,21 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.work.Constraints;
 import androidx.work.Data;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-
-
 import com.example.moviemate.databinding.LaunchScreenBinding;
-
 import com.example.moviemate.entity.UserMovies;
-
 import com.example.moviemate.viewmodel.SharedViewModel;
 import com.example.moviemate.viewmodel.UserMoviesViewModel;
 import com.example.moviemate.viewmodel.UserViewModel;
-
 import com.example.moviemate.worker.PeriodicWorker;
 import com.google.android.material.navigation.NavigationView;
-
-
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
-
-import com.google.type.TimeOfDay;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
-
-
-
 import android.widget.DatePicker;
-
-
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -68,90 +40,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
-
-import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.Intent;
-
-
-import android.os.Bundle;
-
 import android.util.Log;
-import android.view.LayoutInflater;
-
-import android.view.View;
-import android.widget.Button;
-
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
-
-
-import com.example.moviemate.databinding.LaunchScreenBinding;
-
-import com.example.moviemate.entity.UserMovies;
-import com.example.moviemate.model.Location;
-import com.example.moviemate.service.RetrofitClient;
-import com.example.moviemate.service.RetrofitClientMaps;
-import com.example.moviemate.viewmodel.UserMoviesViewModel;
-import com.example.moviemate.viewmodel.UserViewModel;
-
-import com.example.moviemate.worker.PeriodicWorker;
-import com.google.android.material.navigation.NavigationView;
-
-
-import com.google.gson.Gson;
-import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.Point;
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
-import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
-import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-import com.mapbox.mapboxsdk.utils.BitmapUtils;
-
-
-import android.widget.DatePicker;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LaunchActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private LaunchScreenBinding binding;
@@ -162,14 +53,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
     private SharedViewModel sharedViewModel;
 
     List<UserMovies> allWishlistMovies = new ArrayList<UserMovies>();
-
-    double lat = 0.0;
-    double longitutde = 0.0;
-
-
     String userEmail;
-
-    MapboxMap mapboxMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,8 +99,6 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         });
         launchMaps(this);
 
-//       WorkManager.getInstance().cancelAllWork();
-//       WorkManager.getInstance().cancelAllWorkByTag(PeriodicWorker.PERIODIC_WORKER_TAG);
          saveUserMovieWishlistOnFirebase();
     }
 
@@ -240,7 +122,6 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         model.setDateOfBirth(selectedDate);
         sharedViewModel.setStartDate(selectedDate);
         sharedViewModel.setEndDate(selectedDate);
-
     }
 
     public void launchMaps(Context context) {
@@ -257,23 +138,16 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
         });
 
         userMoviesViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(UserMoviesViewModel.class);
-//        userMoviesViewModel.getAllUserMovies().observe(this, new Observer<List<UserMovies>>() {
-//            @Override
-//            public void onChanged(@Nullable List<UserMovies> movies) {
-//                System.out.println("on Movie add to wishlist");
-//                sendOneTimeRequestToWorkManager( userEmail, movies); //Keep it for the demo only.
-//
-//            }
-//        });
-
         userMoviesViewModel.getAllUserMovies().observe(this, userMovies -> {
+            allWishlistMovies.clear();
             for (UserMovies movie1: userMovies
             ) {
                 Log.d(movie1.originalTitle, movie1.overview);
                 Log.d("User email", movie1.getUserEmail());
                 allWishlistMovies.add(movie1);
             }
-            getCurrentPeriodicWorkers();
+            if(allWishlistMovies.size()>0)
+                getCurrentPeriodicWorkers();
         } );
     }
 
@@ -281,7 +155,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
     //Check if any periodic worker exists if yes than utilize that only
     private void getCurrentPeriodicWorkers()
     {
-        ListenableFuture<List<WorkInfo>> future = WorkManager.getInstance().getWorkInfosByTag(PeriodicWorker.PERIODIC_WORKER_TAG);
+        ListenableFuture<List<WorkInfo>> future =  WorkManager.getInstance(this ).getWorkInfosByTag(PeriodicWorker.PERIODIC_WORKER_TAG);//WorkManager.getInstance().getWorkInfosByTag(PeriodicWorker.PERIODIC_WORKER_TAG);
         try {
             List<WorkInfo> workersInfo = future.get();
             for (WorkInfo workInfo : workersInfo) {
@@ -329,17 +203,24 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                         )
                         .build();
 
-        WorkManager.getInstance().getWorkInfoByIdLiveData(oneTimeWorkRequest.getId())
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(oneTimeWorkRequest.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
                         if(workInfo != null) {
                             String status = workInfo.getState().name();
                             System.out.println("Worker Status: "+ status + "\n");
+                            //if successfully saved on the server it's going to delete the current room data
+                            if(status =="SUCCEEDED")
+                            {
+                                //Delete room live data here
+                                userMoviesViewModel.deleteAll();
+                                PeriodicWorker.isDataSaveOnFireBase = false;
+                            }
                         }
                     }
                 });
-        WorkManager.getInstance().enqueue(oneTimeWorkRequest);
+        WorkManager.getInstance(this).enqueue(oneTimeWorkRequest);
     }
 
     private void sendPeriodicRequestToWorkManager(String userEmail,  List<UserMovies> userMovies)
@@ -370,7 +251,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                         .build();
 
         // var guid = periodicWorkRequest.getId();
-        WorkManager.getInstance().getWorkInfoByIdLiveData(periodicWorkRequest.getId())
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(periodicWorkRequest.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
@@ -378,11 +259,17 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                             String status = workInfo.getState().name();
                             System.out.println("Worker Status : " + status + "\n");
                             //if successfully saved on the server it's going to delete the current room data
+                            if (PeriodicWorker.isDataSaveOnFireBase)
+                            {
+                                //Delete room live data here
+                                userMoviesViewModel.deleteAll();
+                                PeriodicWorker.isDataSaveOnFireBase = false;
+                            }
                         }
                     }
                 });
 
-        WorkManager.getInstance().enqueue(
+        WorkManager.getInstance(this).enqueue(
                 periodicWorkRequest
         );
     }
@@ -400,7 +287,6 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
 
         //Get the initial delay time
         long initialDelay = getDelayUntilOfNight(23,0);
-        System.out.println("initialDelay : " + initialDelay);
         // Create new WorkRequest from existing Worker, new constraints, and the id of the old WorkRequest.
         PeriodicWorkRequest updatedWorkRequest =
                 new PeriodicWorkRequest.Builder(PeriodicWorker.class, 1, TimeUnit.DAYS)
@@ -417,7 +303,7 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                         .build();
 
         // var guid = periodicWorkRequest.getId();
-        WorkManager.getInstance().getWorkInfoByIdLiveData(updatedWorkRequest.getId())
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(updatedWorkRequest.getId())
                 .observe(this, new Observer<WorkInfo>() {
                     @Override
                     public void onChanged(WorkInfo workInfo) {
@@ -425,13 +311,20 @@ public class LaunchActivity extends AppCompatActivity implements DatePickerDialo
                             String status = workInfo.getState().name();
                             System.out.println("Updated Worker Status : " + status + "\n");
                             //if successfully saved on the server it's going to delete the current room data
+                            if (PeriodicWorker.isDataSaveOnFireBase)
+                            {
+                                //Delete room live data here
+                                userMoviesViewModel.deleteAll();
+                                PeriodicWorker.isDataSaveOnFireBase = false;
+                            }
                         }
                     }
                 });
 
-        System.out.println("worker has been updated");
+
+        System.out.println("Worker has been updated");
         // Pass the new WorkRequest to updateWork().
-        WorkManager.getInstance().updateWork(updatedWorkRequest);
+        WorkManager.getInstance(this).updateWork(updatedWorkRequest);
 
     }
 

@@ -2,16 +2,11 @@ package com.example.moviemate;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,29 +15,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.example.moviemate.R;
-import com.example.moviemate.databinding.ActivityMainBinding;
 import com.example.moviemate.databinding.FragmentBarReportBinding;
-import com.github.mikephil.charting.components.Description;
-
 import com.example.moviemate.model.Movie;
 import com.example.moviemate.model.MovieResult;
 import com.example.moviemate.service.RetrofitClient;
 import com.example.moviemate.viewmodel.SharedViewModel;
-
 import org.eazegraph.lib.charts.BarChart;
 import org.eazegraph.lib.models.BarModel;
-import org.eazegraph.lib.models.PieModel;
-
-/*import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;*/
 
 
 import java.math.BigDecimal;
@@ -64,8 +43,6 @@ public class BarChartFragment extends Fragment {
     private FragmentBarReportBinding binding;
     ArrayList<Movie> finalMovieList = new ArrayList<Movie>();
     Context context;
-
-    boolean showReport = false;
 
     private boolean isStartDateChanged;
     private boolean isEndDateChanged;
@@ -92,6 +69,7 @@ public class BarChartFragment extends Fragment {
 
         binding = FragmentBarReportBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+        // Fetching list of fields on the bar chart screen
         barChart = view.findViewById(R.id.barChart);
         startDate = view.findViewById(R.id.startDate);
         endDate = view.findViewById(R.id.endDate);
@@ -103,12 +81,13 @@ public class BarChartFragment extends Fragment {
         popularity = view.findViewById(R.id.popularity);
 
         System.out.println("Bar chart activity " + this.getActivity());
+        // Callind the api around 50 times to fetch large amount of data that can be used to display bar chart
         for (int i = 450; i < 500; i++) {
-
-            Call<MovieResult> call = RetrofitClient.getInstance().getMyApi().
+            // sending the api key and page number to retrofit client
+            Call<MovieResult> call = RetrofitClient.getInstance().getApi().
                     getPopularMovies1("6f6d1b438fddb937dd48a7f88b87eae7", String.valueOf(i));
             call.enqueue(new Callback<MovieResult>() {
-
+                // getting the response and adding the movie list
                 @Override
                 public void onResponse(Call<MovieResult> call, Response<MovieResult> response) {
                     MovieResult movieList = response.body();
@@ -118,25 +97,16 @@ public class BarChartFragment extends Fragment {
                         movie.setReleaseDate(movieList.getResults().get(j).getReleaseDate());
                         movie.setPopularity(movieList.getResults().get(j).getPopularity());
                         finalMovieList.add(movie);
-/*                        if (finalMovieList.size() == 1000)
-                        {
-                            try {
-                                createBarChart(view);
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }*/
                     }
-
-
                 }
                 @Override
                 public void onFailure(Call<MovieResult> call, Throwable t) {
-
+                    // handing on failure
                 }
 
             });
         }
+        // start date dat picker
         binding.startDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -151,6 +121,7 @@ public class BarChartFragment extends Fragment {
             }
         });
 
+        // end date dat picker
         binding.endDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -165,6 +136,7 @@ public class BarChartFragment extends Fragment {
             }
         });
 
+        // end date setter method
         SharedViewModel sharedViewmodel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         sharedViewmodel.getStartDate().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -192,6 +164,7 @@ public class BarChartFragment extends Fragment {
             }
         });
 
+        // end date setter method
         sharedViewmodel.getStartDate().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -246,9 +219,11 @@ public class BarChartFragment extends Fragment {
 
     }
 
+
     public void createBarChart(BarChart barChart) throws ParseException {
         String startDt = String.valueOf(binding.startDate.getText());
         String endDt = String.valueOf(binding.endDate.getText());
+        // validating start and end date is not null
         if (startDt.isEmpty())
         {
             startDate.setError("Required");
@@ -262,9 +237,9 @@ public class BarChartFragment extends Fragment {
 
         ArrayList<Movie> topMovies = new ArrayList<>();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // adding top 5 movies
         for (int i = 0; i < finalMovieList.size(); i++)
         {
-            int count = 0;
             Date startDate = dateFormat.parse(startDt);
             Date endDate = dateFormat.parse(endDt);
             Date releaseDate = dateFormat.parse(finalMovieList.get(i).getReleaseDate());
@@ -272,6 +247,7 @@ public class BarChartFragment extends Fragment {
                 topMovies.add(finalMovieList.get(i));
             }
         }
+        // checking if movies are empty
         if (topMovies.isEmpty()) {
             binding.invalidText.setText("Select different dates and retry");
             return;
@@ -283,6 +259,8 @@ public class BarChartFragment extends Fragment {
             totalPopularity = totalPopularity.add(new BigDecimal(topMovies.get(index).getPopularity()));
         }
         Log.d("totalPopularity", String.valueOf(totalPopularity));
+
+        // displaying the bar chart
 
         BarModel bm1 = new BarModel(topMovies.get(0).getOriginalTitle(),new BigDecimal(topMovies.get(0).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), Color.parseColor("#FFA726"));
         BarModel bm2 = new BarModel(topMovies.get(1).getOriginalTitle(),new BigDecimal(topMovies.get(1).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), Color.parseColor("#66BB6A"));
@@ -309,56 +287,8 @@ public class BarChartFragment extends Fragment {
         movieName5.setText(topMovies.get(4).getOriginalTitle());
         popularity.setText("Popularity Index (Out of 100)");
 
-
-        /*barChart.addBar(new BarModel(topMovies.get(0).getOriginalTitle(),new BigDecimal(topMovies.get(0).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF123456));
-        barChart.addBar(new BarModel(topMovies.get(1).getOriginalTitle(),new BigDecimal(topMovies.get(1).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(),  0xFF343456));
-        barChart.addBar(new BarModel(topMovies.get(2).getOriginalTitle(),new BigDecimal(topMovies.get(2).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF563456));
-        barChart.addBar(new BarModel(topMovies.get(3).getOriginalTitle(),new BigDecimal(topMovies.get(3).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF873F56));
-        barChart.addBar(new BarModel(topMovies.get(4).getOriginalTitle(),new BigDecimal(topMovies.get(4).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue(), 0xFF56B7F1));
-*/
-
         barChart.startAnimation();
 
-
-
-        /*List<BarEntry> movieEntries = new ArrayList<>();
-        float pop1 = new BigDecimal(topMovies.get(0).getPopularity()).divide(totalPopularity, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100")).intValue();
-        movieEntries.add(new BarEntry(0, pop1));
-        movieEntries.add(new BarEntry(1, 48));
-        movieEntries.add(new BarEntry(2, 23));
-        movieEntries.add(new BarEntry(3, 84));
-        movieEntries.add(new BarEntry(4, 11));
-
-
-        BarDataSet barDataSet = new BarDataSet(movieEntries, "Popularity");
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-
-        Legend legend = binding.barChart.getLegend();
-        legend.setTextColor(Color.WHITE);
-
-        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-        List<String> xAxisValues = new ArrayList<>(Arrays.asList("Mv1", "Mv2", "Mv3", "Mv4", "Mv5"));
-
-        binding.barChart.getX();
-        XAxis xAxis = binding.barChart.getXAxis();
-        binding.barChart.getXAxis().setValueFormatter(new
-                com.github.mikephil.charting.formatter.IndexAxisValueFormatter(xAxisValues));
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(Color.WHITE);
-
-        BarData barData = new BarData(barDataSet);
-        binding.barChart.setData(barData);
-        barData.setBarWidth(1.0f);
-        binding.barChart.setVisibility(View.VISIBLE);
-        binding.barChart.animateY(4000);
-
-
-        //description will be displayed as "Description Label" if not provided
-        Description description = new Description();
-        description.setText("Popularity for Each Movie");
-        binding.barChart.setDescription(description);
-        //refresh the chart
-        binding.barChart.invalidate();*/
     }
 
 }

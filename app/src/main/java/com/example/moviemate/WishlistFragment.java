@@ -10,17 +10,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.moviemate.databinding.LaunchScreenBinding;
 import com.example.moviemate.databinding.WishlistFragmentBinding;
 import com.example.moviemate.entity.UserMovies;
-import com.example.moviemate.model.Movie;
 import com.example.moviemate.viewmodel.UserMoviesViewModel;
 import com.example.moviemate.viewmodel.UserViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -83,12 +79,7 @@ public class WishlistFragment extends Fragment {
     {
         binding = WishlistFragmentBinding.inflate(inflater);
         View view = binding.getRoot();
-
         this.context = container.getContext();
-        // Inflate the layout for this fragment
-
-
-
         UserViewModel userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         userViewModel.getLoginEmail().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -107,9 +98,7 @@ public class WishlistFragment extends Fragment {
                               Bundle savedInstanceState)
     {
         Log.d("Tag", String.valueOf(this.userSelectedMovies.size()));
-        //TODO: Do Your stuff here
         fragmentView = view;
-
 
     }
 
@@ -144,21 +133,10 @@ public class WishlistFragment extends Fragment {
                             System.out.println("Title of Movie : " + movies.originalTitle);
                         }
 
-
-                      /*  WishlistAdapter itemAdapter = new WishlistAdapter(getContext(),movieList);
-                        RecyclerView recyclerView
-                                = view.findViewById(R.id.recycleView);
-                        recyclerView.setLayoutManager(
-                                new LinearLayoutManager(getContext()));
-
-                        // adapter instance is set to the
-                        // recyclerview to inflate the items.
-                        recyclerView.setAdapter(itemAdapter);*/
                     }
                     else {
                         //data for this user didn't exist
                         //show empty blanks here
-                        //TODO: NO Movie added in wishlist . Can show this message
                     }
                 }
                 else {

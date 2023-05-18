@@ -6,31 +6,19 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
-
-import com.bumptech.glide.Glide;
-import com.example.moviemate.databinding.MovieContentBinding;
 import com.example.moviemate.databinding.ShareScreenBinding;
-import com.example.moviemate.entity.UserMovies;
 import com.example.moviemate.model.Movie;
-import com.example.moviemate.viewmodel.UserMoviesViewModel;
-
+import com.example.moviemate.service.FacebookMessengerService;
 import java.util.Properties;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -49,6 +37,7 @@ public class ShareScreenActivity extends AppCompatActivity {
 
     Movie movie;
 
+    FacebookMessengerService facebookMessengerService = new FacebookMessengerService();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,8 +116,14 @@ public class ShareScreenActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-
-
+        binding.messengerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String textMessage = binding.message.getText().toString() + " " + movie.getOriginalTitle() + ", coming out on " + movie.getReleaseDate();
+                String recipientId = "6611845722169325";
+                facebookMessengerService.sendMessage(recipientId, textMessage);
+            }
+        });
 
     }
     @Override

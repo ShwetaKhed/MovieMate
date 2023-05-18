@@ -21,6 +21,19 @@
 -->
 
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/messengerButton"
+        android:layout_width="224dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="172dp"
+        android:background="#E91E63"
+        android:text="DM Via Messenger"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message" />
+
     <AutoCompleteTextView
         android:id="@+id/r_email"
         android:layout_width="321dp"
@@ -56,8 +69,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/emailButton"
-        android:layout_width="113dp"
-        android:layout_height="51dp"
+        android:layout_width="221dp"
+        android:layout_height="47dp"
         android:layout_marginTop="76dp"
         android:background="#E91E63"
         android:text="Send Mail"

@@ -1,7 +1,6 @@
 package com.example.moviemate;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.moviemate.entity.UserMovies;
-import com.example.moviemate.model.Movie;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-// Extends the Adapter class to RecyclerView.Adapter
-// and implement the unimplemented methods
 public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHolder> {
     ArrayList movieTitle = new ArrayList<>();
     ArrayList movieImage = new ArrayList<>();
@@ -58,8 +55,6 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     // Binding data to the into specified position
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // TypeCast Object to int type
-       // int res = (int) courseImg.get(position);
         Glide.with(holder.imageView.getContext()).load(movieImage.get(position)).into(holder.imageView);
         holder.text.setText((String) movieTitle.get(position));
     }
@@ -80,18 +75,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             text = (TextView) view.findViewById(R.id.movieTitle);
             imageView = (ImageView) view.findViewById(R.id.ivMovie);
 
-           /* view.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    int position = getAdapterPosition();
 
-                    if (position != RecyclerView.NO_POSITION){
-                        UserMovie selectedMovie =  movieList.get(position);
-                        Intent i = new Intent(context, MovieContentActivity.class);
-                        i.putExtra("movie", selectedMovie);
-                        context.startActivity(i);
-                    }
-                }
-            });*/
         }
     }
 }

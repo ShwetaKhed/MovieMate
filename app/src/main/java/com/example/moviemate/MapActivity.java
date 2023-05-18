@@ -12,15 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.example.moviemate.databinding.InfoFragmentBinding;
 import com.example.moviemate.databinding.MapsFragmentBinding;
 import com.example.moviemate.model.Location;
 import com.example.moviemate.service.RetrofitClientMaps;
@@ -65,19 +61,14 @@ public class MapActivity extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-
         this.context = container.getContext();
         Mapbox.getInstance(this.context, getResources().getString(R.string.mapbox_access_token));
-
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.maps_fragment, container, false);
     }
 
@@ -89,7 +80,6 @@ public class MapActivity extends Fragment {
 
         //Get the data before @ in the email address and consider it as the username of the user
         String username = email.split("@")[0];
-
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Users");
         mDatabaseRef.child(username).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
 
@@ -99,7 +89,6 @@ public class MapActivity extends Fragment {
                 {
                     if(task.getResult().exists())
                     {
-                        //Toast.makeText(getContext(), "Successfully Read", Toast.LENGTH_SHORT).show();
                         DataSnapshot dataSnapshot = task.getResult();
                         String add = String.valueOf(dataSnapshot.child("address").getValue());
                         Log.d("Tag", add);
@@ -150,16 +139,11 @@ public class MapActivity extends Fragment {
                                         });
                                     }
                                 });
-
                             }
-
                             @Override
                             public void onFailure(Call<Location> call, Throwable t) {
-
                             }
-
                         });
-
                     }
                 }
                 else {
@@ -168,9 +152,6 @@ public class MapActivity extends Fragment {
                 }
             }
         });
-
-
-
     }
 
 
@@ -194,9 +175,6 @@ public class MapActivity extends Fragment {
                 readDataFromFirebase(view, s);
             }
         });
-
-
-
     }
 }
 

@@ -23,7 +23,7 @@ public class RetrofitClient {
         return instance;
     }
 
-    public RetrofitInterface getMyApi() {
+    public RetrofitInterface getApi() {
         return retrofitInterface;
     }
 }
